@@ -1,4 +1,5 @@
 aws dynamodb create-table --cli-input-json https://raw.githubusercontent.com/sarathreznov/FoodTruck_SI/dev/DB/CustomerCollection.json
 
+sleep 60
 
 aws dynamodb batch-write-item --request-items https://raw.githubusercontent.com/sarathreznov/FoodTruck_SI/dev/DB/customer-items.json
