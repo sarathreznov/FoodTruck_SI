@@ -1,0 +1,37 @@
+{
+    "customertable": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "username": {"S": "daveusername"},
+                    "email": {"S": "Dave@uncc.edu"},
+                    "password": {"S": "Phoenix"},
+                    "dob": {"S": "12-12-1990"}
+					"usertype": {"S": "AZ"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "username": {"S": "daveusername1"},
+                    "email": {"S": "Dave Jones"},
+                    "password": {"S": "12-12-1990"},
+                    "dob": {"S": "AZ"}
+					"usertype": {"S": "AZ"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                 "Item": {
+                    "username": {"S": "daveusername2"},
+                    "email": {"S": "Dave Jones"},
+                    "password": {"S": "Phoenix"},
+                    "dob": {"S": "12-12-1990"}
+					"usertype": {"S": "AZ"}
+                }
+            }
+        }
+    ]
+}

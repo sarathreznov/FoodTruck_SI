@@ -1,0 +1,58 @@
+{
+    "vendortable": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "vendorid": {"S": "101"},
+                    "email": {"S": "Dave Jones"},
+                    "password": {"S": "Phoenix"},
+                    "username": {"S": "test data"}
+					"usertype": {"S": "AZ"}
+					"foodtruckname": {"S": "test data"}
+                    "address": {"S": "test data"}
+                    "businessphone": {"N": "7044212888"}
+                    "operatingloc": {"S": "test data"}
+                    "operatinghrs": {"S": "10:00 AM - 12:00 PM"}
+					"menu1url": {"S": "test data"}
+                    "menu2url": {"S": "test data"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                          "Item": {
+                    "vendorid": {"S": "102"},
+                    "email": {"S": "Dave Jones"},
+                    "password": {"S": "Phoenix"},
+                    "username": {"S": "test data"}
+					"usertype": {"S": "AZ"}
+					"foodtruckname": {"S": "test data"}
+                    "address": {"S": "test data"}
+                    "businessphone": {"N": "7044212888"}
+                    "operatingloc": {"S": "test data"}
+                    "operatinghrs": {"S": "10:00 AM - 12:00 PM"}
+					"menu1url": {"S": "test data"}
+                    "menu2url": {"S": "test data"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                            "Item": {
+                    "vendorid": {"S": "103"},
+                    "email": {"S": "Dave Jones"},
+                    "password": {"S": "Phoenix"},
+                    "username": {"S": "test data"}
+					"usertype": {"S": "AZ"}
+					"foodtruckname": {"S": "test data"}
+                    "address": {"S": "test data"}
+                    "businessphone": {"N": "7044212888"}
+                    "operatingloc": {"S": "test data"}
+                    "operatinghrs": {"S": "10:00 AM - 12:00 PM"}
+					"menu1url": {"S": "test data"}
+                    "menu2url": {"S": "test data"}
+                }
+            }
+        }
+    ]
+}
