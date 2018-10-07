@@ -7,7 +7,7 @@
                     "username": {"S": "daveusername"},
                     "comments": {"S": "very good"},
                     "rating": {"N": "4"},
-					"sendpromotions": {"BOOL": "1"}
+					"sendpromotions": {"BOOL": "true"}
                 }
             }
         }
