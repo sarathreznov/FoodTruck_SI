@@ -32,6 +32,6 @@ Make a new file called .env.development
 I will include the file in google drive as well. You can take it from there.
 
 * Now run the server as follows.
-  * node server/server.js
+  * npm start
 
 * You should be able to view the app at http://localhost:3000
