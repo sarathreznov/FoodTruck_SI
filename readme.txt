@@ -29,7 +29,9 @@ In order to run that, Run the following:
 * Now we have to include a file which has our firebase database details. Since this file contains access keys,
 it should not be pushed to a public version control system, and so I have not committed that file to github.
 Make a new file called .env.development
-I will include the file in google drive as well. You can take it from there. When you donwload the file be sure to check the name is .env.development .There should be a " . " before env as well.
+I will include the file in google drive as well. You can take it from there. 
+When you download the file be sure to check the name is .env.development 
+There should be a " . " before env as well.
 
 * Now run the server as follows.
   * npm start
