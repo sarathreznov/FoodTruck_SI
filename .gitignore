@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 Application/node_modules/
 Application/public/dist/
 Application/package-lock.json
 Application/.env.development
 .DS_Store
+=======
+node_modules/
+public/dist/
+package-lock.json
+.env.development
+>>>>>>> master
