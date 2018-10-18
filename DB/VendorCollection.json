@@ -1,0 +1,27 @@
+{
+    "TableName": "vendortable",
+    "KeySchema": [
+        {
+            "AttributeName": "vendorid",
+            "KeyType": "HASH"
+        }, {
+            "AttributeName": "email",
+            "KeyType": "RANGE"
+        }
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "vendorid",
+            "AttributeType": "S"
+        }, {
+            "AttributeName": "email",
+            "AttributeType": "S"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 10,
+        "WriteCapacityUnits": 5
+    }
+}
+ 
+ 

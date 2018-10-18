@@ -1,0 +1,15 @@
+{
+    "customerinterest": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "vendorid": {"S": "101"},
+                    "username": {"S": "daveusername"},
+                    "comments": {"S": "very good"},
+                    "rating": {"N": "4"},
+					"sendpromotions": {"BOOL": true}
+                }
+            }
+        }
+    ]
+}
