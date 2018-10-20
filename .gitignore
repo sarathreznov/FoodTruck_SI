@@ -1,0 +1,5 @@
+Application/node_modules/
+Application/public/dist/
+Application/package-lock.json
+Application/.env.development
+.DS_Store
