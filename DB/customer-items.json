@@ -4,8 +4,7 @@
             "PutRequest": {
                 "Item": {
                     "username": {"S": "user1@uncc.edu"},
-                    "email": {"S": "user1@uncc.edu"},
-                    "dob": {"S": "12-12-1990"}
+                    "email": {"S": "user1@uncc.edu"}
                 }
             }
         },
@@ -13,8 +12,7 @@
             "PutRequest": {
                 "Item": {
                     "username": {"S": "user2@uncc.edu"},
-                    "email": {"S": "user2@uncc.edu"},
-                    "dob": {"S": "AZ"}
+                    "email": {"S": "user2@uncc.edu"}
                 }
             }
         },
@@ -22,8 +20,7 @@
             "PutRequest": {
                  "Item": {
                     "username": {"S": "user3@uncc.edu"},
-                    "email": {"S": "user3@uncc.edu"},
-                            "dob": {"S": "12-12-1990"}
+                    "email": {"S": "user3@uncc.edu"}
                 }
             }
         }
