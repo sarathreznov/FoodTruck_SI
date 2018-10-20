@@ -21,8 +21,8 @@
         {
             "PutRequest": {
                  "Item": {
-                    "username": {"S": "user2@uncc.edu"},
-                    "email": {"S": "user2@uncc.edu"},
+                    "username": {"S": "user3@uncc.edu"},
+                    "email": {"S": "user3@uncc.edu"},
                             "dob": {"S": "12-12-1990"}
                 }
             }
