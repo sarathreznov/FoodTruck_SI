@@ -23,8 +23,8 @@ aws dynamodb batch-write-item --request-items https://raw.githubusercontent.com/
 
 sleep 60
 
-aws dynamodb batch-write-item --request-items https://raw.githubusercontent.com/sarathreznov/FoodTruck_SI/dev/vendoreventdetailsCollections.json
 
+aws dynamodb create-table --cli-input-json https://raw.githubusercontent.com/sarathreznov/FoodTruck_SI/dev/DB/vendoreventdetailsCollections.json
 
 sleep 60
 
