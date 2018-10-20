@@ -2,19 +2,19 @@
     "TableName": "customerinterest",
     "KeySchema": [
         {
-            "AttributeName": "username",
+            "AttributeName": "customerusername",
             "KeyType": "HASH"
         }, {
-            "AttributeName": "vendorid",
+            "AttributeName": "vendorusername",
             "KeyType": "RANGE"
         }
     ],
     "AttributeDefinitions": [
         {
-            "AttributeName": "username",
+            "AttributeName": "customerusername",
             "AttributeType": "S"
         }, {
-            "AttributeName": "vendorid",
+            "AttributeName": "vendorusername",
             "AttributeType": "S"
         }
     ],

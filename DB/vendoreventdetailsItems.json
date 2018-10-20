@@ -1,0 +1,16 @@
+{
+    "vendoreventdetails": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "vendorusername": {"S": "vendor4@uncc.edu"},
+                    "eventtitle": {"S": "Columbus Day Deal"},
+                    "eventdescription": {"S": "Grab yur free food for 50% discount"},
+                    "eventstartdate": {"S": "10-29-2018"},
+					"eventenddate": {"S": "10-29-2018"},
+					"eventimage": {"S": "http://www.google.com"}
+                }
+            }
+        }
+    ]
+}

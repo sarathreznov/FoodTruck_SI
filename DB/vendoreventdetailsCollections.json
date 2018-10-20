@@ -1,20 +1,15 @@
-{
-    "TableName": "vendortable",
+
+ {
+    "TableName": "vendoreventdetails",
     "KeySchema": [
         {
             "AttributeName": "vendorusername",
             "KeyType": "HASH"
-        }, {
-            "AttributeName": "email",
-            "KeyType": "RANGE"
         }
     ],
     "AttributeDefinitions": [
         {
             "AttributeName": "vendorusername",
-            "AttributeType": "S"
-        }, {
-            "AttributeName": "email",
             "AttributeType": "S"
         }
     ],

@@ -3,33 +3,27 @@
         {
             "PutRequest": {
                 "Item": {
-                    "username": {"S": "daveusername"},
-                    "email": {"S": "Dave@uncc.edu"},
-                    "password": {"S": "Phoenix"},
-                    "dob": {"S": "12-12-1990"},
-					"usertype": {"S": "AZ"}
+                    "username": {"S": "user1@uncc.edu"},
+                    "email": {"S": "user1@uncc.edu"},
+                    "dob": {"S": "12-12-1990"}
                 }
             }
         },
         {
             "PutRequest": {
                 "Item": {
-                    "username": {"S": "daveusername1"},
-                    "email": {"S": "Dave Jones"},
-                    "password": {"S": "12-12-1990"},
-                    "dob": {"S": "AZ"},
-					"usertype": {"S": "AZ"}
+                    "username": {"S": "user2@uncc.edu"},
+                    "email": {"S": "user2@uncc.edu"},
+                    "dob": {"S": "AZ"}
                 }
             }
         },
         {
             "PutRequest": {
                  "Item": {
-                    "username": {"S": "daveusername2"},
-                    "email": {"S": "Dave Jones"},
-                    "password": {"S": "Phoenix"},
-                    "dob": {"S": "12-12-1990"},
-					"usertype": {"S": "AZ"}
+                    "username": {"S": "user2@uncc.edu"},
+                    "email": {"S": "user2@uncc.edu"},
+                            "dob": {"S": "12-12-1990"}
                 }
             }
         }
