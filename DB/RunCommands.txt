@@ -21,4 +21,14 @@ sleep 60
 
 aws dynamodb batch-write-item --request-items https://raw.githubusercontent.com/sarathreznov/FoodTruck_SI/dev/DB/customerinterest-items.json
 
+sleep 60
+
+aws dynamodb batch-write-item --request-items https://raw.githubusercontent.com/sarathreznov/FoodTruck_SI/dev/vendoreventdetailsCollections.json
+
+
+sleep 60
+
+
+aws dynamodb batch-write-item --request-items https://raw.githubusercontent.com/sarathreznov/FoodTruck_SI/dev/DB/vendoreventdetailsItems.json
+
 
