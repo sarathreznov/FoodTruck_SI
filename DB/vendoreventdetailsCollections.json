@@ -1,0 +1,22 @@
+
+ {
+    "TableName": "vendoreventdetails",
+    "KeySchema": [
+        {
+            "AttributeName": "vendorusername",
+            "KeyType": "HASH"
+        }
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "vendorusername",
+            "AttributeType": "S"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 10,
+        "WriteCapacityUnits": 5
+    }
+}
+ 
+ 

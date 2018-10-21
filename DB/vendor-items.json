@@ -1,0 +1,54 @@
+{
+    "vendortable": [
+        {
+            "PutRequest": {
+                "Item": {
+  "address": {
+    "S": "Student Union, UNCC"
+  },
+  "businessphone": {
+    "N": "7044212888"
+  },
+  "ClosingHrs": {
+    "S": "08:00 PM"
+  },
+  "email": {
+    "S": "vendor4@uncc.edu"
+  },
+  "EndDate": {
+    "S": "11-20-2018"
+  },
+  "foodtruckname": {
+    "S": "Halal Cart2"
+  },
+  "IsWorkinWeekEnd": {
+    "S": "Y"
+  },
+  "menu1url": {
+    "S": "test data"
+  },
+  "menu2url": {
+    "S": "test data"
+  },
+  "OpeningHrs": {
+    "S": "10:00 AM"
+  },
+  "operatingloc": {
+    "S": "test data"
+  },
+  "password": {
+    "S": "Phoenix"
+  },
+  "StartDate": {
+    "S": "10-20-2018"
+  },
+
+  "vendorusername": {
+    "S": "vendor4@uncc.edu"
+  }
+}
+            }
+        }
+  
+    ]
+}

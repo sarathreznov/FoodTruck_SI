@@ -1,0 +1,27 @@
+ {
+    "TableName": "customerinterest",
+    "KeySchema": [
+        {
+            "AttributeName": "customerusername",
+            "KeyType": "HASH"
+        }, {
+            "AttributeName": "vendorusername",
+            "KeyType": "RANGE"
+        }
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "customerusername",
+            "AttributeType": "S"
+        }, {
+            "AttributeName": "vendorusername",
+            "AttributeType": "S"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 10,
+        "WriteCapacityUnits": 5
+    }
+}
+ 
+ 

@@ -1,0 +1,15 @@
+{
+    "customerinterest": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "vendorusername": {"S": "vendor4@uncc.edu"},
+                    "customerusername": {"S": "user1@uncc.edu"},
+                    "comments": {"S": "very good"},
+                    "rating": {"N": "4"},
+					"sendpromotions": {"BOOL": true}
+                }
+            }
+        }
+    ]
+}
