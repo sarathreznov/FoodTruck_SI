@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "c5bb9b3b-eb20-4bd4-aa0b-65ca5d8207ba",
+		"name": "FoodTruck",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3000/users/readUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\" : \"dabayaku@uncc.edu\"\n}"
+				},
+				"url": "http://localhost:3000/users/readUser"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/users/insertUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\" : \"dabayaku@uncc.edu\",\n\t\"email\" : \"dabayaku@uncc.edu\"\n}"
+				},
+				"url": "http://localhost:3000/users/insertUser"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/users/deleteUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\" : \"user2@uncc.edu\"\n}"
+				},
+				"url": "http://localhost:3000/users/deleteUser"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/vendors/insertVendor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"vendorusername\" : \"fastFoodVendor@uncc.edu\",\n\t\"email\" : \"fastFoodVendor@uncc.edu\",\n\t\"address\" : \"UNC Charlotte, North Carolina\",\n\t\"businessphone\" : \"17049999999\",\n\t\"foodtruckname\" : \"Fast Food Fries\",\n\t\"password\" : \"testing\"\n}"
+				},
+				"url": "http://localhost:3000/vendors/insertVendor"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/vendors/readVendor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"vendorusername\" : \"fastFoodVendor@uncc.edu\",\n\t\"email\" : \"fastFoodVendor@uncc.edu\"\n}"
+				},
+				"url": "http://localhost:3000/vendors/readVendor"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/vendors/uploadMenu",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": ""
+						}
+					]
+				},
+				"url": "http://localhost:3000/vendors/uploadMenu"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/vendors/updateVendor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"vendorusername\":\"fastFoodVendor@uncc.edu\",\n\t\"email\" : \"fastFoodVendor@uncc.edu\",\n\t\"address\" : \"Changed Address Just now\",\n\t\"businessphone\" : \"17045556666\",\n\t\"foodtruckname\" : \"Super cool update\",\n\t\"closingHrs\" : \"05:00 PM\",\n\t\"EndDate\" : \"12-30-2018\",\n\t\"IsWorkingWeekEnd\" : \"Y\",\n\t\"OpeningHrs\" : \"11:30 AM\",\n\t\"StartDate\" : \"10-25-2018\",\n\t\"menu1url\" : \"https://s3.us-east-2.amazonaws.com/foodtruck-menu-uploads/1540156189114menu_3.JPG\",\n\t\"menu2url\" : \"https://s3.us-east-2.amazonaws.com/foodtruck-menu-uploads/1540156262875fast_food.jpg\",\n\t\"operatingloc\" : \"Atkins\"\n}"
+				},
+				"url": "http://localhost:3000/vendors/updateVendor"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/vendors/deleteVendor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"vendorusername\":\"vendor3@uncc.edu\",\n\t\"email\":\"vendor3@uncc.edu\"\n}"
+				},
+				"url": "http://localhost:3000/vendors/deleteVendor"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/interests/insertInterests",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"customerusername\" : \"dabayaku@uncc.edu\",\n\t\"vendorusername\" : \"vendor2@uncc.edu\"\n}"
+				},
+				"url": "http://localhost:3000/interests/insertInterests"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/interests/updateInterests",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"customerusername\" : \"dabayaku@uncc.edu\",\n    \"vendorusername\" : \"fastFoodVendor@uncc.edu\",\n    \"comments\" : \"Very Good\",\n    \"rating\" : \"4\",\n    \"sendpromotions\" : \"true\"\n}"
+				},
+				"url": "http://localhost:3000/interests/updateInterests"
+			},
+			"response": []
+		}
+	]
+}
