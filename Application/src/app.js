@@ -31,14 +31,18 @@ ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 firebase.auth().onAuthStateChanged((user) => { //this will also run the first time app is loaded or everytime it is refreshed
   if(user) {
     store.dispatch(login(user.uid));
-    renderApp();
+    setTimeout(() => {
+      renderApp();
+    }, 2000)
     // if(history.location.pathname === '/'){
     //   history.push('/dashboard');
     // }
   }
   else {
     store.dispatch(logout());
-    renderApp();
+    setTimeout(() => {
+      renderApp();
+    }, 2000)
     // history.push('/');
   }
 });
