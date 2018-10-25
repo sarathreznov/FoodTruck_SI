@@ -31,14 +31,31 @@ ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 firebase.auth().onAuthStateChanged((user) => { //this will also run the first time app is loaded or everytime it is refreshed
   if(user) {
     store.dispatch(login(user.uid));
-    renderApp();
-    if(history.location.pathname === '/'){
-      history.push('/dashboard');
-    }
+    setTimeout(() => {
+      renderApp();
+
+      var currentUser = firebase.auth().currentUser;
+      var name, email, photoUrl, uid, emailVerified;
+
+
+      name = user.displayName;
+      name = user.email;
+      photoUrl = user.photoURL;
+      emailVerified = user.emailVerified;
+      uid = user.uid;
+
+      // console.log('currentUser', currentUser);
+
+    }, 1500)
+    // if(history.location.pathname === '/'){
+    //   history.push('/dashboard');
+    // }
   }
   else {
     store.dispatch(logout());
-    renderApp();
-    history.push('/');
+    setTimeout(() => {
+      renderApp();
+    }, 1500)
+    // history.push('/');
   }
 });
