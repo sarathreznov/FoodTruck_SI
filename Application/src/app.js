@@ -33,7 +33,20 @@ firebase.auth().onAuthStateChanged((user) => { //this will also run the first ti
     store.dispatch(login(user.uid));
     setTimeout(() => {
       renderApp();
-    }, 2000)
+
+      var currentUser = firebase.auth().currentUser;
+      var name, email, photoUrl, uid, emailVerified;
+
+
+      name = user.displayName;
+      name = user.email;
+      photoUrl = user.photoURL;
+      emailVerified = user.emailVerified;
+      uid = user.uid;
+
+      // console.log('currentUser', currentUser);
+
+    }, 1500)
     // if(history.location.pathname === '/'){
     //   history.push('/dashboard');
     // }
@@ -42,7 +55,7 @@ firebase.auth().onAuthStateChanged((user) => { //this will also run the first ti
     store.dispatch(logout());
     setTimeout(() => {
       renderApp();
-    }, 2000)
+    }, 1500)
     // history.push('/');
   }
 });
