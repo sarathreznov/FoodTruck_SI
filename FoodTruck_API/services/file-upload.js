@@ -5,8 +5,8 @@ const BUCKET_NAME = "foodtruck-menu-uploads";
 
 let awsConfig = {
     "region" : "us-east-2",
-    "accessKeyId" : "AKIAIMEZE5ZMLNKU5W2A",
-    "secretAccessKey" : "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"
+    "accessKeyId" : "",
+    "secretAccessKey" : ""
 };
 AWS.config.update(awsConfig);
 
