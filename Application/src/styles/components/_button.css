@@ -13,6 +13,10 @@
     color: white;
 }
 
+.button--margin{
+  margin-top: $m-size;
+}
+
 .button--link{
   background: none;
   color: white;
@@ -26,4 +30,9 @@
 .button--remove{
   background: $med-grey;
   /* color: white; */
+}
+
+.button--skip{
+  float: right;
+  margin: $s-size $s-size 0 0;
 }
