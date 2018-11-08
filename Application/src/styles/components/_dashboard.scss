@@ -1,0 +1,15 @@
+.dashboard {
+  // width: 30%;
+  // height: 25%;
+  display: flex;
+
+  flex-wrap: wrap;
+  border-radius: 5px;
+
+  flex-direction: row;
+}
+
+.dashboard__cards{
+  width: 30%;
+  margin: 1.66%;
+}

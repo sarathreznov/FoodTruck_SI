@@ -1,9 +1,11 @@
 .header{
   background: $greyish-blue;
+  font-family: 'Righteous', cursive;
 }
 
 .header__title{
-  color: white;
+  font-family: 'Gloria Hallelujah', cursive;
+  color: #cee8f2;
   text-decoration: none;
   h2{
     margin: 0;
@@ -11,8 +13,14 @@
 }
 
 .header__content{
+
   align-items: center;
   display: flex;
   justify-content: space-between;
   padding: $s-size 0;
+}
+
+a:hover{
+    text-decoration: none;
+    color:white;
 }

@@ -3,16 +3,26 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
 
-export const Header = ({ startLogout, isAuthenticated }) => (
+export const Header = ({ startLogout, isAuthenticated, userType }) => (
   <header className="header">
     <div className="content-container">
       <div className="header__content">
           <Link className="header__title" to="/">
-            <h2>Food Truck App!</h2>
+            <h2>Food Truck Fiesta!</h2>
           </Link>
           {
             isAuthenticated ?
-              <button onClick={startLogout} className="button button--link">Logout</button>
+            (
+              <div>
+                <button onClick={startLogout} className="button button--link">Logout</button>
+                {
+                  (userType)==='customer' ?
+                    (<Link to="/customerprofile" className="button button--link">My Profile</Link>)
+                    :
+                    (<Link to="/vendorprofile" className="button button--link">Foodtruck Profile</Link>)
+                }
+              </div>
+            )
               :
               <Link to="/login" className="button button--link">Login</Link>
           }
@@ -22,7 +32,8 @@ export const Header = ({ startLogout, isAuthenticated }) => (
 );
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: !!state.auth.uid
+  isAuthenticated: !!state.auth.uid,
+  userType: state.auth.userType
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -30,5 +41,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
-// We export the connected version of the component so that we can render
-// this version instead wherever we use this component.

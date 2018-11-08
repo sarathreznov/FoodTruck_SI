@@ -1,0 +1,49 @@
+.profile-group-row{
+  display: flex;
+  flex-direction: row;
+  // @media(min-width: $desktop-breakpoint){
+  //   flex-direction: row;
+  //   align-items: center;
+  //   margin-bottom: $l-size;
+  // }
+}
+
+.profile-group-row__item{
+  margin-right: $s-size;
+  // @media(min-width: $desktop-breakpoint){
+  //   margin: 0 $s-size 0 0;
+  // }
+}
+
+.profile-group-column{
+  display: flex;
+  margin-bottom: $m-size;
+  flex-direction: column;
+  // @media(min-width: $desktop-breakpoint){
+  //   flex-direction: row;
+  //   align-items: center;
+  //   margin-bottom: $l-size;
+  // }
+}
+
+.profile-group-column__item{
+  margin-bottom: $s-size;
+  // @media(min-width: $desktop-breakpoint){
+  //   margin: 0 $s-size 0 0;
+  // }
+}
+
+.profile-group-smaller-column__item{
+  margin-bottom: $xs-size;
+  // @media(min-width: $desktop-breakpoint){
+  //   margin: 0 $s-size 0 0;
+  // }
+}
+
+.profileImage{
+  width: 30%;
+  height: 25%;
+  // float: left;
+  margin: 1.66%;
+  border-radius: 5px;
+}

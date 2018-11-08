@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 
-export const PrivateRoute = ({ // We destructure the props that we need
+export const PrivateRoute = ({
   isAuthenticated,
-  component: Component, // we take the props component and rename it to upperCase because we will be rendering it
+  userType,
+  allowedUserType,
+  component: Component,
   ...rest
  }) => (
   <Route {...rest} component={(props) => (
-    isAuthenticated ? (
+     isAuthenticated && userType===allowedUserType  ? (
       <div>
         <Header />
         <Component {...props} />
@@ -21,7 +23,8 @@ export const PrivateRoute = ({ // We destructure the props that we need
 );
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: !!state.auth.uid
+  isAuthenticated: !!state.auth.uid,
+  userType: state.auth.userType
 });
 
 export default connect(mapStateToProps)(PrivateRoute);
