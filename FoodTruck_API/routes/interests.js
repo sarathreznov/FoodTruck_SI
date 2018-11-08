@@ -3,16 +3,44 @@ const router = express.Router();
 const AWS = require('aws-sdk');
 
 let awsConfig = {
-    "region" : "us-east-2",
-    "endPoint" : "http://dynamodb.us-east-2.amazonaws.com",
-    "accessKeyId" : "AKIAIMEZE5ZMLNKU5W2A",
-    "secretAccessKey" : "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"
+  "region" : "us-east-1",
+  "endPoint" : "http://dynamodb.us-east-1.amazonaws.com",
+  "accessKeyId" : "AKIAJLTFFEZWRRKZE6ZQ",
+  "secretAccessKey" : "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"
 };
 AWS.config.update(awsConfig);
 
 let docClient = new AWS.DynamoDB.DocumentClient();
 
 const CUSTOMER_INTERESTS_TABLE = "customerinterest";
+
+//GET /User Interests
+router.get('/', function(req,res){
+   console.log('Reading user interests' , req.query.customerusername);
+   let userData = {
+       TableName : CUSTOMER_INTERESTS_TABLE,
+       KeyConditionExpression : "customerusername = :cuname",
+       ExpressionAttributeValues: {
+           ":cuname": req.query.customerusername
+       }
+   };
+
+   docClient.query(userData, function(err,result){
+      if(err){
+          console.log('Error reading customer interests');
+          res.status(500).json({
+              message : 'Error reading customer interests',
+              error : err
+          });
+      } else{
+          console.log('reading customer interests', result);
+          res.status(200).json({
+              message : 'Reading customer interests',
+              result : result
+          });
+      }
+   });
+});
 
 router.post('/insertInterests', function(req,res){
    console.log('Inserting into customer interests' , req.body);
@@ -44,31 +72,6 @@ router.post('/insertInterests', function(req,res){
    });
 });
 
-router.post('/readInterests', function(req,res){
-   console.log('Reading user interests' , req.body);
-   let userData = {
-       TableName : CUSTOMER_INTERESTS_TABLE,
-       Key : {
-           "customerusername" : req.body.customerusername,
-           "vendorusername" : req.body.vendorusername
-       }
-   };
-   docClient.getItem(userData, function(err,result){
-      if(err){
-          console.log('Error reading customer interests');
-          res.status(500).json({
-              message : 'Error reading customer interests',
-              error : err
-          });
-      } else{
-          console.log('reading customer interests', result);
-          res.status(200).json({
-              message : 'Reading customer interests',
-              result : result
-          });
-      }
-   });
-});
 
 router.post('/updateInterests' , function(req,res){
    console.log('Updating interests' , req.body);
@@ -138,4 +141,3 @@ router.post('/deleteInterests', function(req,res){
 });
 
 module.exports = router;
-
