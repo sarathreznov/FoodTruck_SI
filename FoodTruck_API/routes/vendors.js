@@ -8,8 +8,8 @@ const singleImage = upload.single('image');
 const s3 = new AWS.S3();
 
 let awsConfig = {
-    "region" : "us-east-2",
-    "endPoint" : "http://dynamodb.us-east-2.amazonaws.com",
+    "region" : "us-east-1",
+    "endPoint" : "http://dynamodb.us-east-1.amazonaws.com",
     "accessKeyId" : "",
     "secretAccessKey" : ""
 };
@@ -19,100 +19,96 @@ let docClient = new AWS.DynamoDB.DocumentClient();
 
 const VENDOR_TABLE = "vendortable";
 
-router.post('/insertVendor', function(req,res) {
-   console.log('Inserting vendor data ', req.body);
-    bcrypt.hash(req.body.password,10,(err,hash) => {
-        if(err) {
-            return res.status(500).json({
+//GET /vendors/
+router.get('/', function(req, res){
+
+    let vendorData = {
+        TableName: VENDOR_TABLE,
+    };
+    docClient.scan(vendorData, function(err, result) {
+        if (err){
+            res.status(500).json({
+                message : 'Error reading vendors',
                 error: err
             });
-        }else{
-            let vendorData = {
-                "vendorusername" : req.body.vendorusername,
-                "email" : req.body.email,
-                "address" : req.body.address,
-                "businessphone" : req.body.businessphone,
-                "foodtruckname" : req.body.foodtruckname,
-                "password" : hash,
-                "ClosingHrs" : req.body.closingHrs,
-                "EndDate": req.body.endDate,
-                "IsWorkingWeekEnd" : req.body.isWorkingWeekEnd,
-                "OpeningHrs" : req.body.openingHrs,
-                "StartDate" : req.body.startDate,
-                "Operatingloc" : req.body.operatingloc
-            };
-        let insertVendor = {
-            TableName : VENDOR_TABLE,
-            Item : vendorData
-        };
-        docClient.put(insertVendor, function(err,result){
-            if(err){
-                console.log('Error inserting vendor details');
-                res.status(500).json({
-                    message : 'Error inserting vendor details',
-                    error: err
-                });
-            }else{
-                console.log('Vendor insertion success');
+        } else{
+            console.log('User data read successfully hmm', result);
+            if(Object.keys(result).length === 0 && result.constructor === Object){
                 res.status(200).json({
-                    message : 'Insert Vendor Success',
-                    result : result
+                    message : 'There are no users',
+                    result : false
                 });
             }
-        })
-
+            else {
+                res.status(200).json({
+                    result
+                });
+            }
         }
     });
 });
 
-router.post('/deleteVendor', function(req,res){
-   console.log('Inside delete vendor' , req.body);
-   let deleteUser = {
-     TableName: VENDOR_TABLE,
-     Key:{
-         "vendorusername" : req.body.vendorusername,
-         "email" : req.body.email
-     }
-   };
-   docClient.delete(deleteUser, function(err,result) {
-       if(err){
-           console.log('Error deleting user ', err);
-           res.status(500).json({
-               message : 'Error deleting user',
-               error : err
-           })
-       }else{
-           console.log('User deleted success',result);
-           res.status(200).json({
-               message : 'Vendor deleted',
-               result : result
-           });
-       }
-   })
+
+//GET /vendors/:userName
+router.get('/:userName', function(req, res){
+    console.log('Reading vendor details ', req.params.userName);
+    let vendorusername = req.params.userName;
+    let vendorData = {
+        TableName: VENDOR_TABLE,
+        Key: {
+            "vendorusername": vendorusername,
+            "email": vendorusername
+        }
+    };
+    docClient.get(vendorData, function(err, result) {
+        if (err){
+            res.status(500).json({
+                message : 'Error reading vendors',
+                error: err
+            });
+        } else{
+            console.log('User data read successfully', result);
+            if(Object.keys(result).length === 0 && result.constructor === Object){
+                res.status(200).json({
+                    message : 'User doesnt exist',
+                    result : false
+                });
+            }
+            else {
+                res.status(200).json({
+                    message : 'Success',
+                    result : result.Item
+                });
+            }
+        }
+    });
 });
 
-router.post('/updateVendor' , function(req,res){
-    console.log('Inside vendor update' , req.body);
+// update vendor details call
+router.put('/:vendorusername', function(req,res){
+    console.log("Updating vendor information for user  " , req.params.vendorusername);
+    console.log("Vendor body information ", req.body);
     let vendorUpdate = {
-      TableName : VENDOR_TABLE,
-      Key : {
-          "vendorusername" : req.body.vendorusername,
-          "email" : req.body.email
-      },
-      UpdateExpression: "set  address = :byAddress, businessphone= :byBusinessPhone,"
-        +"foodtruckname = :byfoodtruckname, closingHrs = :byClosingHrs, EndDate = :byEndDate,"
-        +"IsWorkingWeekEnd = :byIsWorkingWeekEnd, OpeningHrs = :byOpeningHrs, StartDate = :byStartDate, "
-        + "operatingloc = :byOperatingloc",
+        TableName : VENDOR_TABLE,
+        Key : {
+            "vendorusername" : req.params.vendorusername,
+            "email" : req.params.vendorusername
+        },
+        UpdateExpression: "set  address = :byAddress, businessPhone= :byBusinessPhone,"
+            +"foodtruckname = :byfoodtruckname, closingHrs = :byClosingHrs, endDate = :byEndDate,"
+            +"isWorkingWeekEnd = :byIsWorkingWeekEnd, openingHrs = :byOpeningHrs, startDate = :byStartDate, "
+            + "operatingLoc = :byOperatingLoc, imageUrl = :byImageUrl",
         ExpressionAttributeValues : {
-          ":byAddress":req.body.address,
-          ":byBusinessPhone":req.body.businessphone,
-          ":byfoodtruckname":req.body.foodtruckname,
-          ":byClosingHrs":req.body.closingHrs,
-          ":byEndDate":req.body.EndDate,
-          ":byIsWorkingWeekEnd":req.body.IsWorkingWeekEnd,
-          ":byOpeningHrs":req.body.OpeningHrs,
-          ":byStartDate":req.body.StartDate,
-          ":byOperatingloc":req.body.operatingloc
+            ":byAddress":req.body.address,
+            ":byBusinessPhone":req.body.businessPhone,
+            ":byfoodtruckname":req.body.foodtruckname,
+            ":byClosingHrs":req.body.closingHrs,
+            ":byEndDate":req.body.endDate,
+            ":byIsWorkingWeekEnd":req.body.isWorkingWeekEnd,
+            ":byOpeningHrs":req.body.openingHrs,
+            ":byStartDate":req.body.startDate,
+            ":byOperatingLoc":req.body.operatingLoc,
+            ":byImageUrl":req.body.imageURL
         },
         ReturnValue:"UPDATED_NEW"
     };
@@ -134,30 +130,62 @@ router.post('/updateVendor' , function(req,res){
     });
 });
 
-router.post('/readVendor', function(req,res){
-    console.log('Reading vendor details ', req.body);
-    let vendorusername = req.body.vendorusername;
+
+//POST /vendors insert new vendor call
+router.post('/', function(req, res) {
+    console.log('Inserting vendor data ', req.body);
+
     let vendorData = {
-        TableName: VENDOR_TABLE,
-        Key: {
-            "vendorusername": vendorusername,
-            "email": req.body.email
-        }
+        "vendorusername" : req.body.vendorusername,
+        "email" : req.body.email
     };
-    docClient.get(vendorData, function(err, result) {
-        if (err){
+    let insertVendor = {
+        TableName : VENDOR_TABLE,
+        Item : vendorData,
+        ReturnValues: 'ALL_OLD'
+    };
+    docClient.put(insertVendor, function(err, result){
+        console.log(result);
+        if(err){
+            console.log('Error inserting vendor information' , err);
             res.status(500).json({
-                message : 'Error reading vendors',
-                error: err
-            })
-        } else{
+                error:err,
+                message : 'Error inserting vendor information'
+            });
+        }else{
+            console.log('Vendor data inserted successfully', JSON.stringify(result, null, 2));
             res.status(200).json({
                 message : 'Success',
-                result : result
-            })
+                result
+            });
         }
     });
+});
 
+router.delete('/:vendorusername', function(req,res){
+    console.log('Inside delete vendor' , req.params);
+    let deleteUser = {
+        TableName: VENDOR_TABLE,
+        Key:{
+            "vendorusername" : req.params.vendorusername,
+            "email" : req.params.vendorusername
+        }
+    };
+    docClient.delete(deleteUser, function(err,result) {
+        if(err){
+            console.log('Error deleting user ', err);
+            res.status(500).json({
+                message : 'Error deleting user',
+                error : err
+            })
+        }else{
+            console.log('User deleted success',result);
+            res.status(200).json({
+                message : 'Vendor deleted',
+                result : result
+            });
+        }
+    })
 });
 
 router.post('/uploadMenu', function(req,res) {
@@ -165,7 +193,7 @@ router.post('/uploadMenu', function(req,res) {
         if(err){
             return res.status(422).send({errors:[{title:'File upload error', detail:err.message}]});
         }
-            return res.json({'imageUrl':req.file.location});
+        return res.json({'imageUrl':req.file.location});
     });
 });
 
