@@ -24,7 +24,8 @@ export default (state = {}, action) => {
       openingHrs: action.openingHrs,
       closingHrs: action.closingHrs,
       isWorkingWeekEnd: action.isWorkingWeekEnd,
-      menuUrl: action.menuUrl
+      menuUrl: action.menuUrl,
+      imageUrl: action.imageUrl
     };
     default:
     return state;

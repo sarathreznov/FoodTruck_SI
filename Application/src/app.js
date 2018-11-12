@@ -48,11 +48,13 @@ firebase.auth().onAuthStateChanged((user) => {
         userInfo,
         firstTimeUser
       }));
+
     if(userType === 'vendor'){
       store.dispatch(getVendorDetails(userInfo.email));
     }
   }
     // store.dispatch(fetchAllFoodtrucks(
+
     store.dispatch(fetchAllFoodtrucks()).then(() => {
       renderApp();
       if(history.location.pathname.toLowerCase() === '/customerprofile' && userType === 'vendor'){
@@ -62,16 +64,14 @@ firebase.auth().onAuthStateChanged((user) => {
         history.push('/');
       }
     });
-
-
   }
   else {
     store.dispatch(logout());
     localStorage.removeItem('userType');
     localStorage.removeItem('userInfo');
     localStorage.removeItem('firstTimeUser');
-    setTimeout(() => {
+    store.dispatch(fetchAllFoodtrucks()).then(() => {
       renderApp();
-    }, 1500);
+    });
   }
 });

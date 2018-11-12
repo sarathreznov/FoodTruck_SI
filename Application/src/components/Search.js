@@ -20,7 +20,7 @@ export const Search = (props) => (
         onChange={props.onSearchLocationChange}>
         <option value="all">All</option>
         <option value="atkins">Atkins</option>
-        <option value="studentunion">Student Union</option>
+        <option value="student union">Student Union</option>
       </select>
     </div>
   </div>

@@ -72,7 +72,7 @@ export class VendorProfilePage extends React.Component {
 }
 
   const mapStateToProps = (state) => ({
-    imageUrl: state.auth.userInfo.photoURL,
+    imageUrl: state.auth.imageUrl,
     name: state.auth.userInfo.displayName,
     email: state.auth.userInfo.email,
     userType: state.auth.userType,

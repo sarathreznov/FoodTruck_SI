@@ -34,6 +34,9 @@ export const startLogin = (userType) => {
         userInfo,
         firstTimeUser
       }));
+      if(userType === "vendor"){
+        dispatch(getVendorDetails(userInfo.email));
+      }
       // dispatch(getVendorDetails(userInfo.email));
     }).catch((e) => {
       console.log('Error in promise chain', e);
@@ -63,6 +66,7 @@ export const getVendorDetails = (userEmail) => {
           const closingHrs = response.data.result.closingHrs;
           const isWorkingWeekEnd = response.data.result.isWorkingWeekEnd;
           const menuUrl = response.data.result.menu1url;
+          const imageUrl = response.data.result.imageUrl;
           const vendorDetails = {
             foodtruckname,
             location,
@@ -70,7 +74,8 @@ export const getVendorDetails = (userEmail) => {
             openingHrs,
             closingHrs,
             isWorkingWeekEnd,
-            menuUrl
+            menuUrl,
+            imageUrl
           };
           dispatch(addVendorSpecificDetails(vendorDetails));
         }
@@ -85,7 +90,8 @@ export const addVendorSpecificDetails = ({
   openingHrs,
   closingHrs,
   isWorkingWeekEnd,
-  menuUrl
+  menuUrl,
+  imageUrl
 }) => ({
   type: 'ADD_VENDOR_DETAILS',
     foodtruckname,
@@ -94,7 +100,8 @@ export const addVendorSpecificDetails = ({
     openingHrs,
     closingHrs,
     isWorkingWeekEnd,
-    menuUrl
+    menuUrl,
+    imageUrl
 });
 
 const saveCustomerToDynamoIfNotPresent = (userEmail) => {
@@ -160,20 +167,3 @@ export const startLogout = () => {
   });
   };
 };
-
-// firebase.auth().signInWithPopup(provider).then(function(result) {
-//   // This gives you a Google Access Token. You can use it to access the Google API.
-//   var token = result.credential.accessToken;
-//   // The signed-in user info.
-//   var user = result.user;
-//   // ...
-// }).catch(function(error) {
-//   // Handle Errors here.
-//   var errorCode = error.code;
-//   var errorMessage = error.message;
-//   // The email of the user's account used.
-//   var email = error.email;
-//   // The firebase.auth.AuthCredential type that was used.
-//   var credential = error.credential;
-//   // ...
-// });
