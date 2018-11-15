@@ -48,16 +48,19 @@ router.post('/', function(req,res){
     });
 });
 
+//read interests for a given customer
 router.get('/:customerusername', function(req,res){
     console.log('Reading user interests' , req.params.customerusername);
     const username = req.params.customerusername;
     let userData = {
-        /*ExpressionAttributeValues: {
-          'c' : req.params.customerusername
-        },*/
-        KeyConditionExpression: partitionKeyName = username,
-        ProjectionExpression : 'vendorusername, comments, rating, sendPromotions',
-        TableName : CUSTOMER_INTERESTS_TABLE
+        TableName: CUSTOMER_INTERESTS_TABLE,
+        KeyConditionExpression: "#username = :customerusername",
+        ExpressionAttributeNames: {
+            "#username"  : "customerusername"
+        },
+        ExpressionAttributeValues: {
+            ":customerusername" : username
+        }
     };
     docClient.query(userData, function(err,result){
         if(err){
@@ -68,16 +71,14 @@ router.get('/:customerusername', function(req,res){
             });
         } else{
             console.log('reading customer interests', result);
-            result.items.forEach(function(element, index, array){
-                console.log(element)
-                res.status(200).json({
-                    message : 'Reading customer interests'
-                });
+            res.status(200).json({
+                message : 'Reading customer interests',
+                result : result
             });
-
         }
     });
 });
+
 
 router.post('/updateInterests' , function(req,res){
     console.log('Updating interests' , req.body);
