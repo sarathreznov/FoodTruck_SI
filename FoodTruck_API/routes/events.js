@@ -64,11 +64,15 @@ router.get('/:vendorusername', function(req,res) {
     console.log("View events by specific vendor " , vendorusername);
     let vendorData = {
         TableName: VENDOR_EVENTS_TABLE,
-        Key: {
-            "vendorusername": vendorusername
+        KeyConditionExpression: "#vendorusername = :vendorusername",
+        ExpressionAttributeNames: {
+            "#vendorusername"  : "vendorusername"
+        },
+        ExpressionAttributeValues: {
+            ":vendorusername" : vendorusername
         }
     };
-    docClient.get(vendorData, function(err, result) {
+    docClient.query(vendorData, function(err, result) {
         if (err){
             res.status(500).json({
                 message : 'Error reading vendor events',
@@ -85,7 +89,7 @@ router.get('/:vendorusername', function(req,res) {
             else {
                 res.status(200).json({
                     message : 'Success',
-                    result : result.Item
+                    result : result
                 });
             }
         }
