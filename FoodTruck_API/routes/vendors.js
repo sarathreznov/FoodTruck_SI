@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const AWS = require('aws-sdk');
+const accessKeyId = process.env.ACCESS_KEY_ID;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
 const bcrypt = require('bcryptjs');
 const upload = require('../services/file-upload');
 
@@ -10,8 +12,8 @@ const s3 = new AWS.S3();
 let awsConfig = {
     "region" : "us-east-1",
     "endPoint" : "http://dynamodb.us-east-1.amazonaws.com",
-    "accessKeyId" : "",
-    "secretAccessKey" : ""
+    "accessKeyId" : `${accessKeyId}`,
+    "secretAccessKey" : `${secretAccessKey}`
 };
 AWS.config.update(awsConfig);
 
@@ -32,18 +34,18 @@ router.get('/', function(req, res){
                 error: err
             });
         } else{
-            console.log('User data read successfully hmm', result);
-            if(Object.keys(result).length === 0 && result.constructor === Object){
-                res.status(200).json({
-                    message : 'There are no users',
-                    result : false
-                });
-            }
-            else {
-                res.status(200).json({
-                    result
-                });
-            }
+          console.log('User data read successfully hmm', result);
+          if(Object.keys(result).length === 0 && result.constructor === Object){
+            res.status(200).json({
+              message : 'There are no users',
+              result : false
+            });
+          }
+          else {
+            res.status(200).json({
+               result
+            });
+          }
         }
     });
 });
@@ -67,48 +69,112 @@ router.get('/:userName', function(req, res){
                 error: err
             });
         } else{
-            console.log('User data read successfully', result);
-            if(Object.keys(result).length === 0 && result.constructor === Object){
-                res.status(200).json({
-                    message : 'User doesnt exist',
-                    result : false
-                });
-            }
-            else {
-                res.status(200).json({
-                    message : 'Success',
-                    result : result.Item
-                });
-            }
+          console.log('User data read successfully', result);
+          if(Object.keys(result).length === 0 && result.constructor === Object){
+            res.status(200).json({
+              message : 'User doesnt exist',
+              result : false
+            });
+          }
+          else {
+            res.status(200).json({
+               message : 'Success',
+               result : result.Item
+            });
+          }
         }
     });
 });
 
-// update vendor details call
-router.put('/:vendorusername', function(req,res){
-    console.log("Updating vendor information for user  " , req.params.vendorusername);
-    console.log("Vendor body information ", req.body);
+//POST /vendors
+router.post('/', function(req, res) {
+   console.log('Inserting vendor data ', req.body);
+
+            let vendorData = {
+                "vendorusername" : req.body.vendorusername,
+                "email" : req.body.email
+                // "address" : req.body.address,
+                // "businessphone" : req.body.businessphone,
+                // "foodtruckname" : req.body.foodtruckname,
+                // "password" : hash,
+                // "ClosingHrs" : req.body.closingHrs,
+                // "EndDate": req.body.endDate,
+                // "IsWorkingWeekEnd" : req.body.isWorkingWeekEnd,
+                // "OpeningHrs" : req.body.openingHrs,
+                // "StartDate" : req.body.startDate,
+                // "Operatingloc" : req.body.operatingloc
+            };
+        let insertVendor = {
+            TableName : VENDOR_TABLE,
+            Item : vendorData,
+            ReturnValues: 'ALL_OLD'
+        };
+        docClient.put(insertVendor, function(err, result){
+          console.log(result);
+            if(err){
+                console.log('Error inserting user information' , err);
+                res.status(500).json({
+                    error:err,
+                    message : 'Error inserting user information'
+                });
+            }else{
+                console.log('User data inserted successfully', JSON.stringify(result, null, 2));
+                res.status(200).json({
+                    message : 'Success',
+                    result
+                });
+            }
+        });
+    });
+
+router.post('/deleteVendor', function(req,res){
+   console.log('Inside delete vendor' , req.body);
+   let deleteUser = {
+     TableName: VENDOR_TABLE,
+     Key:{
+         "vendorusername" : req.body.vendorusername,
+         "email" : req.body.email
+     }
+   };
+   docClient.delete(deleteUser, function(err,result) {
+       if(err){
+           console.log('Error deleting user ', err);
+           res.status(500).json({
+               message : 'Error deleting user',
+               error : err
+           })
+       }else{
+           console.log('User deleted success',result);
+           res.status(200).json({
+               message : 'Vendor deleted',
+               result : result
+           });
+       }
+   })
+});
+
+router.post('/updateVendor' , function(req,res){
+    console.log('Inside vendor update' , req.body);
     let vendorUpdate = {
-        TableName : VENDOR_TABLE,
-        Key : {
-            "vendorusername" : req.params.vendorusername,
-            "email" : req.params.vendorusername
-        },
-        UpdateExpression: "set  address = :byAddress, businessPhone= :byBusinessPhone,"
-            +"foodtruckname = :byfoodtruckname, closingHrs = :byClosingHrs, endDate = :byEndDate,"
-            +"isWorkingWeekEnd = :byIsWorkingWeekEnd, openingHrs = :byOpeningHrs, startDate = :byStartDate, "
-            + "operatingLoc = :byOperatingLoc, imageUrl = :byImageUrl",
+      TableName : VENDOR_TABLE,
+      Key : {
+          "vendorusername" : req.body.vendorusername,
+          "email" : req.body.email
+      },
+      UpdateExpression: "set  address = :byAddress, businessphone= :byBusinessPhone,"
+        +"foodtruckname = :byfoodtruckname, closingHrs = :byClosingHrs, EndDate = :byEndDate,"
+        +"IsWorkingWeekEnd = :byIsWorkingWeekEnd, OpeningHrs = :byOpeningHrs, StartDate = :byStartDate, "
+        + "operatingloc = :byOperatingloc",
         ExpressionAttributeValues : {
-            ":byAddress":req.body.address,
-            ":byBusinessPhone":req.body.businessPhone,
-            ":byfoodtruckname":req.body.foodtruckname,
-            ":byClosingHrs":req.body.closingHrs,
-            ":byEndDate":req.body.endDate,
-            ":byIsWorkingWeekEnd":req.body.isWorkingWeekEnd,
-            ":byOpeningHrs":req.body.openingHrs,
-            ":byStartDate":req.body.startDate,
-            ":byOperatingLoc":req.body.operatingLoc,
-            ":byImageUrl":req.body.imageURL
+          ":byAddress":req.body.address,
+          ":byBusinessPhone":req.body.businessphone,
+          ":byfoodtruckname":req.body.foodtruckname,
+          ":byClosingHrs":req.body.closingHrs,
+          ":byEndDate":req.body.EndDate,
+          ":byIsWorkingWeekEnd":req.body.IsWorkingWeekEnd,
+          ":byOpeningHrs":req.body.OpeningHrs,
+          ":byStartDate":req.body.StartDate,
+          ":byOperatingloc":req.body.operatingloc
         },
         ReturnValue:"UPDATED_NEW"
     };
@@ -131,69 +197,13 @@ router.put('/:vendorusername', function(req,res){
 });
 
 
-//POST /vendors insert new vendor call
-router.post('/', function(req, res) {
-    console.log('Inserting vendor data ', req.body);
-
-    let vendorData = {
-        "vendorusername" : req.body.vendorusername,
-        "email" : req.body.email
-    };
-    let insertVendor = {
-        TableName : VENDOR_TABLE,
-        Item : vendorData,
-        ReturnValues: 'ALL_OLD'
-    };
-    docClient.put(insertVendor, function(err, result){
-        console.log(result);
-        if(err){
-            console.log('Error inserting vendor information' , err);
-            res.status(500).json({
-                error:err,
-                message : 'Error inserting vendor information'
-            });
-        }else{
-            console.log('Vendor data inserted successfully', JSON.stringify(result, null, 2));
-            res.status(200).json({
-                message : 'Success',
-                result
-            });
-        }
-    });
-});
-
-router.delete('/:vendorusername', function(req,res){
-    console.log('Inside delete vendor' , req.params);
-    let deleteUser = {
-        TableName: VENDOR_TABLE,
-        Key:{
-            "vendorusername" : req.params.vendorusername,
-            "email" : req.params.vendorusername
-        }
-    };
-    docClient.delete(deleteUser, function(err,result) {
-        if(err){
-            console.log('Error deleting user ', err);
-            res.status(500).json({
-                message : 'Error deleting user',
-                error : err
-            })
-        }else{
-            console.log('User deleted success',result);
-            res.status(200).json({
-                message : 'Vendor deleted',
-                result : result
-            });
-        }
-    })
-});
 
 router.post('/uploadMenu', function(req,res) {
     singleImage(req,res, function(err){
         if(err){
             return res.status(422).send({errors:[{title:'File upload error', detail:err.message}]});
         }
-        return res.json({'imageUrl':req.file.location});
+            return res.json({'imageUrl':req.file.location});
     });
 });
 

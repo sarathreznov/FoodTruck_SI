@@ -10,6 +10,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const vendorsRouter = require('./routes/vendors');
 const customerInterests = require('./routes/interests');
+const eventsInterests = require('./routes/events');
 
 const app = express();
 
@@ -29,9 +30,10 @@ app.use(bodyParser.json());
 
 //Applying CORS- giving access to any client
 app.use((req,res,next) => {
-    res.header('Access-Control-Allow-Origin','*');
-    res.header('Access-Control-Allow-Origin','Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    if(req.method === 'OPTIONS'){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin, Accept, x-auth, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+
+      if(req.method === 'OPTIONS'){
         req.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET, OPTIONS');
         return res.status(200).json({})
     }
@@ -43,6 +45,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/vendors', vendorsRouter);
 app.use('/interests',customerInterests);
+app.use('/events',eventsInterests);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

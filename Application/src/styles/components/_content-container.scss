@@ -3,3 +3,8 @@
   max-width: 80rem;
   padding: 0 $m-size;
 }
+
+.complete-container{
+  display: flex;
+  flex-direction: row;
+}
