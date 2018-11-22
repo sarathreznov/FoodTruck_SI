@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom';
 import AppRouter, { history } from './routers/AppRouter';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
-import { login, logout } from './actions/auth';
+import { login, logout, addCurrentUser, getVendorDetails } from './actions/auth';
+import { fetchAllSubscribedFoodtrucks, fetchAllSubscribedEvents } from './actions/events';
+import { fetchAllFoodtrucks  } from './actions/foodtrucks';
 import LoadingPage from './components/LoadingPage';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 import { firebase } from './firebase/firebase';
 
-const store = configureStore();
 
+const store = configureStore();
 const jsx = (
   <Provider store={ store }>
     <AppRouter />
@@ -28,34 +30,52 @@ const renderApp = () => {
 
 ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 
-firebase.auth().onAuthStateChanged((user) => { //this will also run the first time app is loaded or everytime it is refreshed
+firebase.auth().onAuthStateChanged((user) => {
   if(user) {
+    let token;
+    user.getIdToken().then(function(accessToken) {
+      token = accessToken;
+    });
     store.dispatch(login(user.uid));
-    setTimeout(() => {
+    let userType = JSON.parse(localStorage.getItem('userType'));
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    let firstTimeUser = JSON.parse(localStorage.getItem('firstTimeUser'));
+    if(userType && userInfo){
+      store.dispatch(addCurrentUser({
+        userType,
+        token,
+        userInfo,
+        firstTimeUser
+      }));
+  }
+
+    store.dispatch(fetchAllFoodtrucks()).then(() => {
+      if(userType === 'customer'){
+        return store.dispatch(fetchAllSubscribedFoodtrucks(userInfo.email)).then(() => {
+          let subscribedFoodtrucks = store.getState().events.subscribedFoodtrucks;
+          return store.dispatch(fetchAllSubscribedEvents(subscribedFoodtrucks));
+        });
+      }
+      else if(userType === 'vendor'){
+        return store.dispatch(getVendorDetails(userInfo.email));
+      }
+    }).then(() => {
       renderApp();
-
-      var currentUser = firebase.auth().currentUser;
-      var name, email, photoUrl, uid, emailVerified;
-
-
-      name = user.displayName;
-      name = user.email;
-      photoUrl = user.photoURL;
-      emailVerified = user.emailVerified;
-      uid = user.uid;
-
-      // console.log('currentUser', currentUser);
-
-    }, 1500)
-    // if(history.location.pathname === '/'){
-    //   history.push('/dashboard');
-    // }
+      if(history.location.pathname.toLowerCase() === '/customerprofile' && userType === 'vendor'){
+        history.push('/');
+      }
+      if(history.location.pathname.toLowerCase() === '/vendorprofile' && userType === 'customer'){
+        history.push('/');
+      }
+    });
   }
   else {
     store.dispatch(logout());
-    setTimeout(() => {
+    localStorage.removeItem('userType');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('firstTimeUser');
+    store.dispatch(fetchAllFoodtrucks()).then(() => {
       renderApp();
-    }, 1500)
-    // history.push('/');
+    });
   }
 });

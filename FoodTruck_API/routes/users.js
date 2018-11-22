@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const AWS = require('aws-sdk');
+const accessKeyId = process.env.ACCESS_KEY_ID;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
 
 let awsConfig = {
-    "region" : "us-east-2",
-    "endPoint" : "http://dynamodb.us-east-2.amazonaws.com",
-    "accessKeyId" : "",
-    "secretAccessKey" : ""
+  "region" : "us-east-1",
+  "endPoint" : "http://dynamodb.us-east-1.amazonaws.com",
+  "accessKeyId" : `${accessKeyId}`,
+  "secretAccessKey" : `${secretAccessKey}`
 };
 AWS.config.update(awsConfig);
 
@@ -14,7 +16,44 @@ let docClient = new AWS.DynamoDB.DocumentClient();
 
 const CUSTOMER_TABLE = "customertable";
 
-router.post('/insertUser', function(req,res,next) {
+
+//GET /users/:userName
+router.get('/:userName', function(req, res) {
+  console.log('reading user data' , req.params.userName);
+  const userName = req.params.userName;
+  let userData = {
+      TableName : CUSTOMER_TABLE,
+      Key: {
+          "username" : userName
+      }
+  };
+  docClient.get(userData, function(err, result) {
+    if(err){
+        console.log('Error retrieving user information' , err);
+        res.status(500).json({
+            error:err,
+            message : 'Error reading user information'
+        });
+    }else{
+        console.log('User data read successfully', result);
+        if(Object.keys(result).length === 0 && result.constructor === Object){
+          res.status(200).json({
+            message : 'User doesnt exist',
+            result : false
+          });
+        }
+        else {
+          res.status(200).json({
+             message : 'Success',
+             result
+          });
+        }
+    }
+  });
+});
+
+//POST /users
+router.post('/', function(req, res) {
    console.log('inserting user data' , req.body);
    let newUser = {
        "username" : req.body.username,
@@ -22,9 +61,11 @@ router.post('/insertUser', function(req,res,next) {
    };
    let insertData = {
        TableName: CUSTOMER_TABLE,
-       Item: newUser
+       Item: newUser,
+       ReturnValues: 'ALL_OLD'
    };
-   docClient.put(insertData, function(err,result){
+   docClient.put(insertData, function(err, result){
+     console.log(result);
        if(err){
            console.log('Error inserting user information' , err);
            res.status(500).json({
@@ -32,16 +73,16 @@ router.post('/insertUser', function(req,res,next) {
                message : 'Error inserting user information'
            });
        }else{
-           console.log('User data inserted successfully' , result);
-           res.status(201).json({
+           console.log('User data inserted successfully', JSON.stringify(result, null, 2));
+           res.status(200).json({
                message : 'Success',
-               result : {result}
+               result
            });
        }
-   })
+   });
 });
 
-router.post('/deleteUser', function(req,res) {
+router.post('/deleteUser', function(req, res) {
    console.log('Inside delete user ', req.body);
    let deleteData = {
       TableName : CUSTOMER_TABLE,
@@ -65,33 +106,6 @@ router.post('/deleteUser', function(req,res) {
           });
       }
    });
-});
-
-
-router.post('/readUser', function(req, res) {
-  console.log('reading user data' , req.body.username);
-  let userName = req.body.username;
-  let userData = {
-      TableName : CUSTOMER_TABLE,
-      Key: {
-          "username" : userName
-      }
-  };
-  docClient.get(userData, function(err,result) {
-    if(err){
-        console.log('Error retrieving user information' , err);
-        res.status(500).json({
-            error:err,
-            message : 'Error reading user information'
-        });
-    }else{
-        console.log('User data read successfully' , result);
-        res.status(200).json({
-           message : 'Success',
-           result : result
-        });
-    }
-  })
 });
 
 router.post('/deleteUser', (req,res,next) => {

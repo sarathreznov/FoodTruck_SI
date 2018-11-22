@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const AWS = require('aws-sdk');
+const accessKeyId = process.env.ACCESS_KEY_ID;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
 
 let awsConfig = {
-    "region" : "us-east-2",
-    "endPoint" : "http://dynamodb.us-east-2.amazonaws.com",
-    "accessKeyId" : "",
-    "secretAccessKey" : ""
+  "region" : "us-east-1",
+  "endPoint" : "http://dynamodb.us-east-1.amazonaws.com",
+  "accessKeyId" : `${accessKeyId}`,
+  "secretAccessKey" : `${secretAccessKey}`
 };
 AWS.config.update(awsConfig);
 
@@ -14,20 +16,50 @@ let docClient = new AWS.DynamoDB.DocumentClient();
 
 const CUSTOMER_INTERESTS_TABLE = "customerinterest";
 
-router.post('/insertInterests', function(req,res){
+//GET /User Interests
+router.get('/', function(req,res){
+   console.log('Reading user interests' , req.query.customerusername);
+   let userData = {
+       TableName : CUSTOMER_INTERESTS_TABLE,
+       KeyConditionExpression : "customerusername = :cuname",
+       ExpressionAttributeValues: {
+           ":cuname": req.query.customerusername
+       }
+   };
+
+   docClient.query(userData, function(err, result){
+      if(err){
+          console.log('Error reading customer interests');
+          res.status(500).json({
+              message : 'Error reading customer interests',
+              error : err
+          });
+      } else{
+          console.log('reading customer interests', result);
+          res.status(200).json({
+              message : 'Reading customer interests',
+              result : result
+          });
+      }
+   });
+});
+
+//POST /User Interests
+router.post('/', function(req,res){
    console.log('Inserting into customer interests' , req.body);
    let custInterests = {
        "customerusername" : req.body.customerusername,
-       "vendorusername" : req.body.vendorusername,
-       "comments" : req.body.comments,
-       "rating" : req.body.rating,
-       "sendpromotions" : req.body.sendpromotions
+       "vendorusername" : req.body.vendorusername
+       // "comments" : req.body.comments,
+       // "rating" : req.body.rating,
+       // "sendpromotions" : req.body.sendpromotions
    };
    let interestData = {
        TableName : CUSTOMER_INTERESTS_TABLE,
-       Item : custInterests
+       Item : custInterests,
+       ReturnValues: 'ALL_OLD'
    };
-   docClient.put(interestData, function(err,result){
+   docClient.put(interestData, function(err, result){
       if(err){
           console.log('Error inserting customer interests' , err);
           res.status(500).json({
@@ -44,31 +76,6 @@ router.post('/insertInterests', function(req,res){
    });
 });
 
-router.post('/readInterests', function(req,res){
-   console.log('Reading user interests' , req.body);
-   let userData = {
-       TableName : CUSTOMER_INTERESTS_TABLE,
-       Key : {
-           "customerusername" : req.body.customerusername,
-           "vendorusername" : req.body.vendorusername
-       }
-   };
-   docClient.getItem(userData, function(err,result){
-      if(err){
-          console.log('Error reading customer interests');
-          res.status(500).json({
-              message : 'Error reading customer interests',
-              error : err
-          });
-      } else{
-          console.log('reading customer interests', result);
-          res.status(200).json({
-              message : 'Reading customer interests',
-              result : result
-          });
-      }
-   });
-});
 
 router.post('/updateInterests' , function(req,res){
    console.log('Updating interests' , req.body);
@@ -138,4 +145,3 @@ router.post('/deleteInterests', function(req,res){
 });
 
 module.exports = router;
-
