@@ -66,9 +66,8 @@ export class FoodTruckDashboard extends React.Component {
         }
       }
     }
-    console.log('events in dashboard', subscribedEvents);
     const subscribedFoodtrucks = this.props.subscribedFoodtrucks;
-    console.log(subscribedFoodtrucks);
+
     const hashSubscribedFoodtrucks = {};
     if(subscribedFoodtrucks){
       for(let foodtruck of subscribedFoodtrucks){
@@ -77,6 +76,7 @@ export class FoodTruckDashboard extends React.Component {
     }
 
     return (
+
       <div>
       <Header />
       <div className="complete-container">
@@ -121,8 +121,8 @@ export class FoodTruckDashboard extends React.Component {
                   <CardTitle>{event.vendorusername}</CardTitle>
                   <CardTitle>{event.eventTitle}</CardTitle>
                   <CardTitle>
-                    {moment(event.eventStartDate).format('MMMM Do, YYYY')} -
-                    {moment(event.eventEndDate).format('MMMM Do, YYYY')}
+                    {moment(event.eventStartDate, 'MM-DD-YYYY').format('MMMM Do, YYYY')} -
+                    {moment(event.eventEndDate, 'MM-DD-YYYY').format('MMMM Do, YYYY')}
                   </CardTitle>
                   <CardSubtitle>{event.eventDescription}</CardSubtitle>
                 </CardBody>
