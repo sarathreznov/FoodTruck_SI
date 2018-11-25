@@ -39,9 +39,6 @@ export const fetchAllSubscribedEvents = (subscribedFoodtrucks) => {
   return (dispatch, getState) => {
   let promises = [];
   subscribedFoodtrucks.forEach(({vendorusername}) => {
-    // let params = {
-    //   vendorusername
-    // };
     promises.push(axios({
     method: 'get',
     url: `${url}/events/${vendorusername}`
@@ -50,9 +47,7 @@ export const fetchAllSubscribedEvents = (subscribedFoodtrucks) => {
   return axios.all(promises).then((results) => {
       let subscribedEvents = [];
       results.forEach((response) => {
-        console.log(response.data.result);
         subscribedEvents.push(response.data.result);
-          // mainObject[response.identifier] = response.value;
       });
       return dispatch(saveAllSubscribedEvents(subscribedEvents));
   });
@@ -63,18 +58,3 @@ const saveAllSubscribedEvents = (subscribedEvents) => ({
     type: 'SAVE_ALL_SUBSCRIBED_EVENTS',
     subscribedEvents
   });
-
-
-  // var mainObject = {},
-  //     promises = [];
-  //
-  // myArrayOfData.forEach(function(singleElement){
-  //   myUrl = singleElement.webAddress;
-  //   promises.push(axios.get(myUrl))
-  // });
-  //
-  // axios.all(promises).then(function(results) {
-  //     results.forEach(function(response) {
-  //         mainObject[response.identifier] = response.value;
-  //     })
-  // });

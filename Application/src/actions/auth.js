@@ -1,6 +1,7 @@
 import { firebase, googleAuthProvider } from '../firebase/firebase';
 import axios from 'axios';
 const url = process.env.URL;
+import { fetchAllSubscribedFoodtrucks, fetchAllSubscribedEvents } from './events';
 
 export const login = (uid) => ({
   type: 'LOGIN',
@@ -34,10 +35,15 @@ export const startLogin = (userType) => {
         userInfo,
         firstTimeUser
       }));
-      if(userType === "vendor"){
+      if(userType === 'customer'){
+        return dispatch(fetchAllSubscribedFoodtrucks(userInfo.email)).then(() => {
+          let subscribedFoodtrucks = getState().events.subscribedFoodtrucks;
+          return dispatch(fetchAllSubscribedEvents(subscribedFoodtrucks));
+        });
+      }
+      else if(userType === "vendor"){
         dispatch(getVendorDetails(userInfo.email));
       }
-      // dispatch(getVendorDetails(userInfo.email));
     }).catch((e) => {
       console.log('Error in promise chain', e);
     });
@@ -160,7 +166,7 @@ export const logout = () => ({
 export const startLogout = () => {
   return () => {
     return firebase.auth().signOut().then(function () {
-    // window.location = "https://mail.google.com/mail/u/0/?logout&hl=en";
+    window.location = "https://mail.google.com/mail/u/0/?logout&hl=en";
     // document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost/GoogleVue4";
   }).catch(function (error) {
     console.log(error);
