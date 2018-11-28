@@ -3,11 +3,13 @@ const router = express.Router();
 const AWS = require('aws-sdk');
 const accessKeyId = process.env.ACCESS_KEY_ID;
 const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+const MENU_BUCKET_NAME = "foodtruck-vendor-info";
+const uuid = require('uuid/v1');
+
 const bcrypt = require('bcryptjs');
 const upload = require('../services/file-upload');
 
 const singleImage = upload.single('image');
-const s3 = new AWS.S3();
 
 let awsConfig = {
     "region" : "us-east-1",
@@ -16,6 +18,7 @@ let awsConfig = {
     "secretAccessKey" : `${secretAccessKey}`
 };
 AWS.config.update(awsConfig);
+const s3 = new AWS.S3();
 
 let docClient = new AWS.DynamoDB.DocumentClient();
 
@@ -50,6 +53,31 @@ router.get('/', function(req, res){
     });
 });
 
+//GET /vendors/uploadeventimage
+router.get('/uploadeventimage', function(req, res) {
+  const vendor = req.query.vendorusername;
+  const key = `${vendor}/${uuid()}.jpeg`;
+  if(!vendor){
+    res.status(500).json({
+        message : 'No vendor user specified'
+    });
+  } else {
+    s3.getSignedUrl('putObject', {
+      Bucket: MENU_BUCKET_NAME,
+      ContentType: 'image/jpeg',
+      Key: key
+    }, function (err, url){
+      if (err){
+          res.status(500).json({
+              message : 'Error uploading event image',
+              error: err
+          });
+        } else {
+          res.send({ key, url });
+        }
+      });
+  }
+});
 
 //GET /vendors/:userName
 router.get('/:userName', function(req, res){
@@ -127,6 +155,47 @@ router.post('/', function(req, res) {
         });
     });
 
+  router.patch('/', function(req, res){
+      console.log('Inside vendor update', req.body);
+      let vendorUpdate = {
+        TableName : VENDOR_TABLE,
+        Key : {
+            "vendorusername" : req.body.vendorusername,
+            "email" : req.body.vendorusername
+        },
+        UpdateExpression: "set address = :byAddress, businessPhone= :byBusinessPhone,"
+          +"foodtruckname = :byfoodtruckname, closingHrs = :byClosingHrs,"
+          +"isWorkingWeekEnd = :byIsWorkingWeekEnd, openingHrs = :byOpeningHrs,"
+          + "operatingLoc = :byOperatingloc",
+          ExpressionAttributeValues : {
+            ":byAddress":req.body.address,
+            ":byBusinessPhone":req.body.phone,
+            ":byfoodtruckname":req.body.foodtruckname,
+            ":byClosingHrs":req.body.closingHrs,
+            ":byIsWorkingWeekEnd":req.body.isWorkingWeekEnd,
+            ":byOpeningHrs":req.body.openingHrs,
+            ":byOperatingloc":req.body.location
+          },
+          ReturnValue:"UPDATED_NEW"
+      };
+      console.log('Updating the vendor');
+      docClient.update(vendorUpdate, function(err, result){
+          if(err){
+              console.log('Error updating vendor', err);
+              res.status(500).json({
+                  message : 'Error updating vendor',
+                  error:err
+              });
+          }else{
+              console.log('Vendor updated successfully', result);
+              res.status(200).json({
+                  message : 'Updated success',
+                  result : result
+              });
+          }
+      });
+  });
+
 router.post('/deleteVendor', function(req,res){
    console.log('Inside delete vendor' , req.body);
    let deleteUser = {
@@ -153,53 +222,19 @@ router.post('/deleteVendor', function(req,res){
    })
 });
 
-router.post('/updateVendor' , function(req,res){
-    console.log('Inside vendor update' , req.body);
-    let vendorUpdate = {
-      TableName : VENDOR_TABLE,
-      Key : {
-          "vendorusername" : req.body.vendorusername,
-          "email" : req.body.email
-      },
-      UpdateExpression: "set  address = :byAddress, businessphone= :byBusinessPhone,"
-        +"foodtruckname = :byfoodtruckname, closingHrs = :byClosingHrs, EndDate = :byEndDate,"
-        +"IsWorkingWeekEnd = :byIsWorkingWeekEnd, OpeningHrs = :byOpeningHrs, StartDate = :byStartDate, "
-        + "operatingloc = :byOperatingloc",
-        ExpressionAttributeValues : {
-          ":byAddress":req.body.address,
-          ":byBusinessPhone":req.body.businessphone,
-          ":byfoodtruckname":req.body.foodtruckname,
-          ":byClosingHrs":req.body.closingHrs,
-          ":byEndDate":req.body.EndDate,
-          ":byIsWorkingWeekEnd":req.body.IsWorkingWeekEnd,
-          ":byOpeningHrs":req.body.OpeningHrs,
-          ":byStartDate":req.body.StartDate,
-          ":byOperatingloc":req.body.operatingloc
-        },
-        ReturnValue:"UPDATED_NEW"
-    };
-    console.log('Updating the vendor');
-    docClient.update(vendorUpdate , function(err,result){
-        if(err){
-            console.log('Error updating vendor',err);
-            res.status(500).json({
-                message : 'Error updating vendor',
-                error:err
-            });
-        }else{
-            console.log('Vendor updated successfully', result);
-            res.status(200).json({
-                message : 'Updated success',
-                result : result
-            });
-        }
-    });
-});
 
 
 
-router.post('/uploadMenu', function(req,res) {
-    singleImage(req,res, function(err){
+
+// router.get('/uploadMenu', function(req, res) {
+//   s3.getSignedUrl('putObject', {
+//
+//   });
+// });
+
+
+router.post('/uploadMenu', function(req, res) {
+    singleImage(req, res, function(err){
         if(err){
             return res.status(422).send({errors:[{title:'File upload error', detail:err.message}]});
         }

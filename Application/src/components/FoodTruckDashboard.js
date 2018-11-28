@@ -1,14 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import moment from 'moment';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button } from 'reactstrap';
 
 import Header from './Header';
 import Search from './Search';
-import { addToCustomerInterest } from '../actions/events';
+import Events from './Events';
+import FoodTruckList from './FoodTruckList';
+import { addToCustomerInterest, removeCustomerInterest } from '../actions/events';
 
 export class FoodTruckDashboard extends React.Component {
   state = {
@@ -54,29 +52,30 @@ export class FoodTruckDashboard extends React.Component {
     this.props.addToCustomerInterest(customer, foodtruck);
   }
 
+  unsubscribeFromFoodTruck = (customer, foodtruck) => {
+    this.props.removeCustomerInterest(customer, foodtruck);
+  }
+
   render(){
     const visibleFoodTrucks = this.state.visibleFoodTrucks;
     const events = this.props.events;
     let subscribedEvents = [];
     if(events){
-
       for(let i = 0; i<events.length; i++){
         for(let j = 0; j<events[i].length;j++){
           subscribedEvents.push(events[i][j]);
         }
       }
     }
-    const subscribedFoodtrucks = this.props.subscribedFoodtrucks;
+    const subscribedFoodTrucks = this.props.subscribedFoodtrucks;
 
-    const hashSubscribedFoodtrucks = {};
-    if(subscribedFoodtrucks){
-      for(let foodtruck of subscribedFoodtrucks){
-        hashSubscribedFoodtrucks[foodtruck.vendorusername] = true;
+    const hashSubscribedFoodTrucks = {};
+    if(subscribedFoodTrucks){
+      for(let foodtruck of subscribedFoodTrucks){
+        hashSubscribedFoodTrucks[foodtruck.vendorusername] = true;
       }
     }
-
     return (
-
       <div>
       <Header />
       <div className="complete-container">
@@ -84,62 +83,32 @@ export class FoodTruckDashboard extends React.Component {
         <Search
           searchText = {this.state.searchText}
           onSearchTextChange = {this.onSearchTextChange}
-          onSearchLocationChange = {this.onSearchLocationChange}/>
-        <div className="dashboard">
-          {
-            visibleFoodTrucks.map((foodtruck, index) => (
-              <Card key = {index} className = "dashboard__cards" >
-                <CardImg top width="100%" src={foodtruck.imageUrl} alt="Card image cap" />
-                <CardBody>
-                  <CardTitle>{foodtruck.vendorusername}</CardTitle>
-                  <CardTitle>{foodtruck.foodtruckname}</CardTitle>
-                  <CardSubtitle>{foodtruck.openingHrs} - {foodtruck.closingHrs}</CardSubtitle>
-                  <CardText>{foodtruck.operatingLoc}</CardText>
-                  {
-                    this.props.userType === 'customer' ?
-                    <Button onClick={() => this.subscribeToFoodTruck(this.props.email, foodtruck.email)}
-                            outline color="danger"
-                            active={hashSubscribedFoodtrucks[foodtruck.vendorusername] ? true : false}>
-                            Subscribe
-                    </Button> : ''
-                  }
-                </CardBody>
-              </Card>
-            ))
-          }
-          </div>
+          onSearchLocationChange = {this.onSearchLocationChange}
+        />
+        <FoodTruckList
+          visibleFoodTrucks = {visibleFoodTrucks}
+          subscribedFoodTrucks = {hashSubscribedFoodTrucks}
+          userType = {this.props.userType}
+          email = {this.props.email}
+          subscribeToFoodTruck = {this.subscribeToFoodTruck}
+          unsubscribeFromFoodTruck = {this.unsubscribeFromFoodTruck}
+        />
         </div>
-        {this.props.userType === 'customer' ?
-        <div className="event-container">
-
-          <p className="event__title">Events coming up soon!</p>
-          {
-            subscribedEvents.map((event, index) => (
-              <Card key = {index} className = "event__cards" >
-                <CardImg top width="100%" src={event.eventImage} alt="Card image cap" />
-                <CardBody>
-                  <CardTitle>{event.vendorusername}</CardTitle>
-                  <CardTitle>{event.eventTitle}</CardTitle>
-                  <CardTitle>
-                    {moment(event.eventStartDate, 'MM-DD-YYYY').format('MMMM Do, YYYY')} -
-                    {moment(event.eventEndDate, 'MM-DD-YYYY').format('MMMM Do, YYYY')}
-                  </CardTitle>
-                  <CardSubtitle>{event.eventDescription}</CardSubtitle>
-                </CardBody>
-              </Card>
-            ))
-          }
-        </div>
-        : '' }
-    </div>
-    </div>
+        {(this.props.userType === 'customer' && subscribedEvents.length > 0) ?
+          <Events
+            subscribedEvents = {subscribedEvents}
+          />
+          : '' }
+      </div>
+      </div>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  addToCustomerInterest: (customer, foodtruck) => dispatch(addToCustomerInterest(customer, foodtruck))
-})
+  addToCustomerInterest: (customer, foodtruck) => dispatch(addToCustomerInterest(customer, foodtruck)),
+  removeCustomerInterest: (customer, foodtruck) => dispatch(removeCustomerInterest(customer, foodtruck))
+});
 
 const mapStateToProps = (state) => ({
   foodtrucks: state.foodTrucks.foodtrucks,

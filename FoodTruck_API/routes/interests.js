@@ -17,7 +17,7 @@ let docClient = new AWS.DynamoDB.DocumentClient();
 const CUSTOMER_INTERESTS_TABLE = "customerinterest";
 
 //GET /User Interests
-router.get('/', function(req,res){
+router.get('/', function(req, res){
    console.log('Reading user interests' , req.query.customerusername);
    let userData = {
        TableName : CUSTOMER_INTERESTS_TABLE,
@@ -118,7 +118,7 @@ router.post('/updateInterests' , function(req,res){
     });
 });
 
-router.post('/deleteInterests', function(req,res){
+router.delete('/', function(req,res){
    console.log('Delete user interests' , req.body);
    let deleteData = {
        TableName:CUSTOMER_INTERESTS_TABLE,

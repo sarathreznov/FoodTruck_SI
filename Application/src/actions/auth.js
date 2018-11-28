@@ -58,6 +58,35 @@ export const addCurrentUser = ({ userType, token, userInfo, firstTimeUser})=>({
   firstTimeUser
 });
 
+export const updateVendorDetails = ({vendorusername,
+  foodtruckname,
+  location,
+  address,
+  phone,
+  openingHrs,
+  closingHrs,
+  isWorkingWeekEnd}) => {
+  return (dispatch) => {
+      return axios({
+        method: 'patch',
+        url: `${url}/vendors/`,
+        data: {
+          vendorusername: vendorusername,
+          foodtruckname: foodtruckname,
+          location: location,
+          address: address,
+          phone: phone,
+          openingHrs: openingHrs,
+          closingHrs: closingHrs,
+          isWorkingWeekEnd: isWorkingWeekEnd
+        }
+      }).then(function(response) {
+        console.log(response);
+        dispatch(getVendorDetails(vendorusername));
+    });
+};
+};
+
 export const getVendorDetails = (userEmail) => {
   return (dispatch, getState) => {
       return axios({
@@ -67,6 +96,7 @@ export const getVendorDetails = (userEmail) => {
         if(response){
           const foodtruckname = response.data.result.foodtruckname;
           const location = response.data.result.operatingLoc;
+          const address = response.data.result.address;
           const phone = response.data.result.businessPhone;
           const openingHrs = response.data.result.openingHrs;
           const closingHrs = response.data.result.closingHrs;
@@ -76,6 +106,7 @@ export const getVendorDetails = (userEmail) => {
           const vendorDetails = {
             foodtruckname,
             location,
+            address,
             phone,
             openingHrs,
             closingHrs,
@@ -92,6 +123,7 @@ export const getVendorDetails = (userEmail) => {
 export const addVendorSpecificDetails = ({
   foodtruckname,
   location,
+  address,
   phone,
   openingHrs,
   closingHrs,
@@ -102,6 +134,7 @@ export const addVendorSpecificDetails = ({
   type: 'ADD_VENDOR_DETAILS',
     foodtruckname,
     location,
+    address,
     phone,
     openingHrs,
     closingHrs,

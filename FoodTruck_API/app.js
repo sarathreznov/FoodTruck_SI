@@ -29,12 +29,11 @@ app.use(bodyParser.json());
 
 
 //Applying CORS- giving access to any client
-app.use((req,res,next) => {
+app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin, Accept, x-auth, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-
       if(req.method === 'OPTIONS'){
-        req.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET, OPTIONS');
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET, OPTIONS');
         return res.status(200).json({})
     }
     next();
