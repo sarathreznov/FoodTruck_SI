@@ -15,6 +15,11 @@
   color: white;
 }
 
+.box-layout__box--alternate{
+  @extend .box-layout__box;
+    background: fade-out($light-greyish-blue, .85);
+}
+
 .box-layout__title{
   margin: 0 0 $m-size 0;
   line-height: 1;

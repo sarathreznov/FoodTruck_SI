@@ -6,7 +6,7 @@ import Header from './Header';
 import Search from './Search';
 import Events from './Events';
 import FoodTruckList from './FoodTruckList';
-import { addToCustomerInterest } from '../actions/events';
+import { addToCustomerInterest, removeCustomerInterest } from '../actions/events';
 
 export class FoodTruckDashboard extends React.Component {
   state = {
@@ -52,6 +52,10 @@ export class FoodTruckDashboard extends React.Component {
     this.props.addToCustomerInterest(customer, foodtruck);
   }
 
+  unsubscribeFromFoodTruck = (customer, foodtruck) => {
+    this.props.removeCustomerInterest(customer, foodtruck);
+  }
+
   render(){
     const visibleFoodTrucks = this.state.visibleFoodTrucks;
     const events = this.props.events;
@@ -87,6 +91,7 @@ export class FoodTruckDashboard extends React.Component {
           userType = {this.props.userType}
           email = {this.props.email}
           subscribeToFoodTruck = {this.subscribeToFoodTruck}
+          unsubscribeFromFoodTruck = {this.unsubscribeFromFoodTruck}
         />
         </div>
         {(this.props.userType === 'customer' && subscribedEvents.length > 0) ?
@@ -101,8 +106,9 @@ export class FoodTruckDashboard extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  addToCustomerInterest: (customer, foodtruck) => dispatch(addToCustomerInterest(customer, foodtruck))
-})
+  addToCustomerInterest: (customer, foodtruck) => dispatch(addToCustomerInterest(customer, foodtruck)),
+  removeCustomerInterest: (customer, foodtruck) => dispatch(removeCustomerInterest(customer, foodtruck))
+});
 
 const mapStateToProps = (state) => ({
   foodtrucks: state.foodTrucks.foodtrucks,

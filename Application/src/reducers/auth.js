@@ -20,6 +20,7 @@ export default (state = {}, action) => {
       ...state,
       foodtruckname: action.foodtruckname,
       location: action.location,
+      address: action.address,
       phone: action.phone,
       openingHrs: action.openingHrs,
       closingHrs: action.closingHrs,
