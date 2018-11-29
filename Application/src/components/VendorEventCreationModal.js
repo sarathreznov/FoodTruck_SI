@@ -15,40 +15,57 @@ import FileCreationPage from './FileCreationPage';
     >
     <h1 className="update-details-modal__title">Create event!</h1>
     <form className="update-details-modal__body" onSubmit={props.onEventFormSubmit}>
-      <input
-        type="text"
-        placeholder="Event Name"
-        className="text-input"
-        name="eventTitle"
-      />
+      <div className="profile-group-column">
+        <input
+          type="text"
+          placeholder="Event Name"
+          className="event-input"
+          name="eventTitle"
+        />
 
-      <DateTimePicker
-        onChange={props.onStartDateChange}
-        value={props.startDate}
-        calendarClassName = "text-input"
-      />
+        <input
+          type="text"
+          placeholder="Event Description"
+          className="event-input"
+          name="eventDescription"
+        />
 
-      <DateTimePicker
-        onChange={props.onEndDateChange}
-        value={props.endDate}
-        calendarClassName = "text-input"
-      />
+        <label htmlFor="eventImage" className="button button--modal">Event Image</label>
+        <div className = "image-inputs">
 
-      <input
-        type="text"
-        placeholder="Event Description"
-        className="text-input"
-        name="eventDescription"
-      />
 
-      <label htmlFor="eventImage" className="button">Event Image</label>
-      <FileCreationPage
-        onImageChanged = {props.onEventImageChanged}
-        id = "eventImage"
-      />
+        <div className = "image-input-div profile-group-column">
+          <label htmlFor="startsAt">Starts At:</label>
+          <DateTimePicker
+            onChange={props.onStartDateChange}
+            value={props.startDate}
+            calendarClassName = "image-input"
+            clockClassName = "image-input"
+            className = "image-input"
+            id="startsAt"
+          />
+        </div>
 
-      <button type="submit" className="button" onClick={props.handleClearModal}>Create Event!</button>
-  </form>
+        <div className = "image-input-div profile-group-column">
+          <label htmlFor="endsAt">Ends At:</label>
+          <DateTimePicker
+            onChange={props.onEndDateChange}
+            value={props.endDate}
+            calendarClassName = "image-input"
+            clockClassName = "image-input"
+            className = "image-input"
+            id="endsAt"
+          />
+        </div>
+        </div>
+        <FileCreationPage
+          onImageChanged = {props.onEventImageChanged}
+          id = "eventImage"
+        />
+
+        <button type="submit" className="button" onClick={props.handleClearModal}>Create Event!</button>
+      </div>
+    </form>
 
   </Modal>
 );

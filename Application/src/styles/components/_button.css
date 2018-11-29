@@ -36,6 +36,18 @@
   margin: $s-size $s-size 0 0;
 }
 
+.button--modal {
+  background: fade-out($med-grey, .15);
+  color: black;
+  margin-top: $l-size;
+  margin-bottom: $xs-size;
+}
+
+.button--vendor {
+  margin-top: $s-size;
+  margin-bottom: $s-size;
+}
+
 .button--without-border {
   background: none;
   border: none;

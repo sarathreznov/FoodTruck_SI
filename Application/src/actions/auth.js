@@ -58,15 +58,19 @@ export const addCurrentUser = ({ userType, token, userInfo, firstTimeUser})=>({
   firstTimeUser
 });
 
-export const updateVendorDetails = ({vendorusername,
-  foodtruckname,
-  location,
-  address,
-  phone,
-  openingHrs,
-  closingHrs,
-  isWorkingWeekEnd}) => {
-  return (dispatch) => {
+export const updateVendorDetails = ({
+        vendorusername,
+        foodtruckname,
+        location,
+        address,
+        phone,
+        openingHrs,
+        closingHrs,
+        isWorkingWeekEnd,
+        menu1,
+        menu2
+      }) => {
+    return (dispatch) => {
       return axios({
         method: 'patch',
         url: `${url}/vendors/`,
@@ -78,13 +82,13 @@ export const updateVendorDetails = ({vendorusername,
           phone: phone,
           openingHrs: openingHrs,
           closingHrs: closingHrs,
-          isWorkingWeekEnd: isWorkingWeekEnd
+          isWorkingWeekEnd: isWorkingWeekEnd,
+          menu1url: menu1,
+          menu2url: menu2
         }
-      }).then(function(response) {
-        console.log(response);
-        dispatch(getVendorDetails(vendorusername));
-    });
-};
+      }).then((response) => dispatch(getVendorDetails(vendorusername))
+    );
+  };
 };
 
 export const getVendorDetails = (userEmail) => {
@@ -92,7 +96,7 @@ export const getVendorDetails = (userEmail) => {
       return axios({
         method: 'get',
         url: `${url}/vendors/${userEmail}`
-      }).then(function(response) {
+      }).then((response) => {
         if(response){
           const foodtruckname = response.data.result.foodtruckname;
           const location = response.data.result.operatingLoc;
@@ -101,7 +105,8 @@ export const getVendorDetails = (userEmail) => {
           const openingHrs = response.data.result.openingHrs;
           const closingHrs = response.data.result.closingHrs;
           const isWorkingWeekEnd = response.data.result.isWorkingWeekEnd;
-          const menuUrl = response.data.result.menu1url;
+          const menu1Url = response.data.result.menu1url;
+          const menu2Url = response.data.result.menu2url;
           const imageUrl = response.data.result.imageUrl;
           const vendorDetails = {
             foodtruckname,
@@ -111,10 +116,11 @@ export const getVendorDetails = (userEmail) => {
             openingHrs,
             closingHrs,
             isWorkingWeekEnd,
-            menuUrl,
+            menu1Url,
+            menu2Url,
             imageUrl
           };
-          dispatch(addVendorSpecificDetails(vendorDetails));
+          return dispatch(addVendorSpecificDetails(vendorDetails));
         }
     });
 };
@@ -128,7 +134,8 @@ export const addVendorSpecificDetails = ({
   openingHrs,
   closingHrs,
   isWorkingWeekEnd,
-  menuUrl,
+  menu1Url,
+  menu2Url,
   imageUrl
 }) => ({
   type: 'ADD_VENDOR_DETAILS',
@@ -139,7 +146,8 @@ export const addVendorSpecificDetails = ({
     openingHrs,
     closingHrs,
     isWorkingWeekEnd,
-    menuUrl,
+    menu1Url,
+    menu2Url,
     imageUrl
 });
 

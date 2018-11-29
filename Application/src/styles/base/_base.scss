@@ -1,5 +1,5 @@
 *{
-  box-sizing: border-box; //This will make sure that padding,borderand margin is not added on top of the width that we specify but included in it. The default behavious is content-box
+  box-sizing: border-box; //This will make sure that padding, border and margin is not added on top of the width that we specify but included in it. The default behavious is content-box
 }
 
 html {
@@ -8,7 +8,7 @@ html {
 
 body {
   color: $dark-grey;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Muli', sans-serif;
   font-size: $m-size;
   line-height: 1.6;
 }
@@ -23,4 +23,8 @@ button:disabled {
 
 .is-active {
   font-weight: bold;
+}
+
+a{
+  display: inline  
 }

@@ -41,6 +41,7 @@
     "react-modal": "^3.6.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "react-time-picker": "^3.1.1",
     "reactstrap": "^6.5.0",
     "redux": "^4.0.0",
     "redux-mock-store": "^1.5.3",
@@ -60,7 +61,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.4",
     "jest": "^23.0.0",
-    "live-server": "^1.2.0",
+    "live-server": "^1.2.1",
     "react-test-renderer": "^16.4.0",
     "webpack-dev-server": "^3.1.10"
   }

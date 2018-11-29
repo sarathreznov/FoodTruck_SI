@@ -166,7 +166,7 @@ router.post('/', function(req, res) {
         UpdateExpression: "set address = :byAddress, businessPhone= :byBusinessPhone,"
           +"foodtruckname = :byfoodtruckname, closingHrs = :byClosingHrs,"
           +"isWorkingWeekEnd = :byIsWorkingWeekEnd, openingHrs = :byOpeningHrs,"
-          + "operatingLoc = :byOperatingloc",
+          + "operatingLoc = :byOperatingloc, menu1url = :byMenu1, menu2url = :byMenu2",
           ExpressionAttributeValues : {
             ":byAddress":req.body.address,
             ":byBusinessPhone":req.body.phone,
@@ -174,7 +174,9 @@ router.post('/', function(req, res) {
             ":byClosingHrs":req.body.closingHrs,
             ":byIsWorkingWeekEnd":req.body.isWorkingWeekEnd,
             ":byOpeningHrs":req.body.openingHrs,
-            ":byOperatingloc":req.body.location
+            ":byOperatingloc":req.body.location,
+            ":byMenu1":req.body.menu1url,
+            ":byMenu2":req.body.menu2url
           },
           ReturnValue:"UPDATED_NEW"
       };

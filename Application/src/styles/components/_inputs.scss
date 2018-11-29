@@ -1,9 +1,26 @@
+.image-inputs{
+  margin-top: $m-size;
+}
+
+.image-input-div{
+  background: inherit;
+  margin-top: $m-size;
+}
+
+
 .image-input{
+  border: 1px solid #cacccd;
+  background: white;
   border: none;
-  height: 50px;
-  font-size: $font-l-size;
-  font-weight: 300;
-  padding: $s-size;
+}
+
+.time-input{
+  width: 21.3rem;
+  background: white;
+}
+
+.react-time-picker__wrapper {
+  border: none;
 }
 
 .text-input{
@@ -12,6 +29,11 @@
   font-size: $font-l-size;
   font-weight: 300;
   padding: $s-size;
+}
+
+.event-input{
+  @extend .text-input;
+  margin-bottom: $m-size;
 }
 
 .text-input--alt{

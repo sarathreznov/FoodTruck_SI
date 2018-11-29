@@ -21,6 +21,9 @@ export const Search = (props) => (
         <option value="all">All</option>
         <option value="atkins">Atkins</option>
         <option value="student union">Student Union</option>
+        <option value="prospector">Prospector</option>
+        <option value="woodward">Woodward</option>
+        <option value="portal">Portal</option>
       </select>
     </div>
   </div>
