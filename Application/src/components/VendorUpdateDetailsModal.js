@@ -6,12 +6,12 @@ import FileCreationPage from './FileCreationPage';
 
 const VendorUpdateDetailsModal = (props) => (
   <Modal
-    isOpen = {props.openModal} //Open/Close state of modal depends on this state which is changed to boolean
-    onRequestClose = {props.handleClearModal} // Required for closing modal on clicking ESC or outside modal
+    isOpen = {props.openModal}
+    onRequestClose = {props.handleClearModal}
     contentLabel = "Update details"
     ariaHideApp={false}
-    closeTimeoutMS={200} // Required for closing transition of modal
-    className="update-details-modal" // Required for overriding css of modal
+    closeTimeoutMS={200}
+    className="update-details-modal"
     >
     <h1 className="update-details-modal__title">Update details</h1>
     <form className="update-details-modal__body" onSubmit={props.onVendorDetailsSubmit}>
@@ -44,20 +44,6 @@ const VendorUpdateDetailsModal = (props) => (
           value = {props.phone}
           onChange = {props.onPhoneChange}
         />
-        {/* <input
-          type="text"
-          placeholder="Opens At"
-          className="text-input"
-          value = {props.openingHrs}
-          onChange = {props.onOpeningHrsChange}
-        />
-        <input
-          type="text"
-          placeholder="Closes At"
-          className="text-input"
-          value = {props.closingHrs}
-          onChange = {props.onClosingHrsChange}
-        /> */}
         <div className = "time-input">
           <TimePicker
             value={props.openingHrs}

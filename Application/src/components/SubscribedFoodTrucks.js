@@ -8,27 +8,12 @@ const SubscribedFoodTrucks = (props) => (
   <div className="dashboard">
     {
       props.subscribedFoodTrucks.map((foodtruck, index) => {
-        // const subscribed = props.subscribedFoodTrucks[foodtruck.vendorusername];
         return (
-          <Card key = {index} className = "dashboard__cards" >
+          <Card key = {index} className = "dashboard__subscribed-cards" >
             <CardImg top width="100%" src={foodtruck.imageUrl} alt="Card image cap" />
             <CardBody>
-              <CardTitle>{foodtruck.vendorusername}</CardTitle>
-              <CardTitle>{foodtruck.foodtruckname}</CardTitle>
-              <CardSubtitle>{foodtruck.openingHrs} - {foodtruck.closingHrs}</CardSubtitle>
-              <CardText>{foodtruck.operatingLoc}</CardText>
-              {/* {
-                props.userType === 'customer' ?
-                <Button onClick={
-                  !subscribed ? () => props.subscribeToFoodTruck(props.email, foodtruck.email)
-                  : () => props.unsubscribeFromFoodTruck(props.email, foodtruck.email)
-                }
-                        outline color="danger"
-                        active={subscribed ? true : false}>
-                        {subscribed ? 'Unsubscribe' : 'Subscribe'}
-                </Button>
-                : ''
-              } */}
+              <CardText>{foodtruck.foodtruckname}</CardText>
+              <CardSubtitle>{foodtruck.vendorusername}</CardSubtitle>
             </CardBody>
           </Card>
         );

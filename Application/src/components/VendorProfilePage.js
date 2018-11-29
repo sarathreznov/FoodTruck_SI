@@ -11,23 +11,26 @@ import { updateVendorDetails } from '../actions/auth';
 
 export class VendorProfilePage extends React.Component {
 
-  state = {
-    openEventModal: undefined,
-    openModal: undefined,
-    file: null,
-    menu1: null,
-    menu2: null,
-    startDate: new Date(),
-    endDate: new Date(),
-    email: this.props.email,
-    foodtruckname : this.props.foodtruckname,
-    location : this.props.location,
-    address : this.props.address,
-    phone : this.props.phone,
-    openingHrs : this.props.openingHrs,
-    closingHrs : this.props.closingHrs,
-    isWorkingWeekEnd : this.props.isWorkingWeekEnd
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      openEventModal: undefined,
+      openModal: undefined,
+      file: null,
+      menu1: props.menu1Url,
+      menu2: props.menu2Url,
+      startDate: new Date(),
+      endDate: new Date(),
+      email: props.email,
+      foodtruckname : props.foodtruckname,
+      location : props.location,
+      address : props.address,
+      phone : props.phone,
+      openingHrs : props.openingHrs,
+      closingHrs : props.closingHrs,
+      isWorkingWeekEnd : props.isWorkingWeekEnd
+    };
+  }
 
   onFoodTruckNameChange = (e) => {
     const foodtruckname = e.target.value;
@@ -131,7 +134,6 @@ export class VendorProfilePage extends React.Component {
     e.preventDefault();
     const eventTitle = e.target.elements.eventTitle.value.trim();
     const eventDescription = e.target.elements.eventDescription.value.trim();
-    console.log(moment(this.state.startDate).format('LLLL'));
     const eventStartDate = moment(this.state.startDate).format('YYYYMMDDTHHmmss');
     const eventEndDate = moment(this.state.endDate).format('YYYYMMDDTHHmmss');
     const eventImageFile = this.state.file;
@@ -149,11 +151,6 @@ export class VendorProfilePage extends React.Component {
     .catch((e) => {console.log('Something went wrong', e)});
   };
 
-
-  componentDidMount(){
-    console.log(moment(this.state.startDate).format('YYYYMMDDTHHmmss'));
-  }
-
   render(){
     const imageUrl = this.props.imageUrl;
     const name = this.props.name;
@@ -166,6 +163,8 @@ export class VendorProfilePage extends React.Component {
     const openingHrs = this.state.openingHrs;
     const closingHrs = this.state.closingHrs;
     const isWorkingWeekEnd = this.state.isWorkingWeekEnd;
+    const menu1 = this.state.menu1;
+    const menu2 = this.state.menu2;
     return (
       <div>
       <div className="content-container">
@@ -173,18 +172,15 @@ export class VendorProfilePage extends React.Component {
           <div className="profile-group-row">
             <img className="profileImage" src={imageUrl} />
             <div className="profile-group-column--user">
-              <h1 className="profile-group-column__item"><strong>{name}</strong></h1>
+              <h1 className="profile-group-column__item"><strong>{foodtruckname}</strong></h1>
               <h2 className="profile-group-column__item"><strong>Email:</strong> {email}</h2>
               <div className="profile-group-row">
-
-                {/* <button className="button button--without-border" onClick={this.openModalView}>Update details</button> */}
               </div>
-              <p className="profile-group-smaller-column__item"><strong>Food Truck Name:</strong> {foodtruckname}</p>
               <p className="profile-group-smaller-column__item"><strong>Location: </strong> {location}</p>
               <p className="profile-group-smaller-column__item"><strong>Address: </strong> {address}</p>
               <p className="profile-group-smaller-column__item"><strong>Phone: </strong> {phone}</p>
               <p className="profile-group-smaller-column__item"><strong>Time: </strong> {openingHrs} - {closingHrs}</p>
-              <p className="profile-group-smaller-column__item"><strong>Open on weekends: </strong> {isWorkingWeekEnd ? 'Yes' : 'No' }</p>
+              <p className="profile-group-smaller-column__item"><strong>Open on weekends: </strong> {!isWorkingWeekEnd || isWorkingWeekEnd.toLowerCase() === 'no' || isWorkingWeekEnd.toLowerCase() === 'n' ? 'No' : 'Yes' }</p>
             </div>
           </div>
           <div className="box-layout__box--alternate">
@@ -220,6 +216,8 @@ export class VendorProfilePage extends React.Component {
           phone = {phone}
           openingHrs = {openingHrs}
           closingHrs = {closingHrs}
+          menu1 = {menu1}
+          menu2 = {menu2}
           isWorkingWeekEnd = {isWorkingWeekEnd}
           onFoodTruckNameChange = {this.onFoodTruckNameChange}
           onLocationChange = {this.onLocationChange}
@@ -248,7 +246,6 @@ export class VendorProfilePage extends React.Component {
 
   const mapStateToProps = (state) => ({
     imageUrl: state.auth.imageUrl,
-    name: state.auth.userInfo.displayName,
     email: state.auth.userInfo.email,
     userType: state.auth.userType,
     foodtruckname: state.auth.foodtruckname,
@@ -258,7 +255,8 @@ export class VendorProfilePage extends React.Component {
     openingHrs: state.auth.openingHrs,
     closingHrs: state.auth.closingHrs,
     isWorkingWeekEnd: state.auth.isWorkingWeekEnd,
-    menuUrl: state.auth.menuUrl
+    menu1Url: state.auth.menu1Url,
+    menu2Url: state.auth.menu2Url
   });
 
   export default connect(mapStateToProps, mapDispatchToProps)(VendorProfilePage);

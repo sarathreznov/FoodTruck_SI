@@ -10,20 +10,20 @@ const Events = (props) => (
   <div className="event-container">
     <p className="event__title">Events coming up soon!</p>
     {
-      props.subscribedEvents.map((event, index) => (
+      props.subscribedEvents.filter((event) => moment().diff(moment(event.eventEndDate), 'days')<0).map((event, index) => (
         <Card key = {index} className = "event__cards" >
           <CardImg top width="100%" src={event.eventImage} alt="Card image cap" />
           <CardBody>
-            <CardTitle>{event.vendorusername}</CardTitle>
-            <CardTitle>{event.eventTitle}</CardTitle>
-            <CardTitle>
-              {moment(event.eventStartDate, 'YYYYMMDDTHHmmss').format('MMM Do, YYYY')} -
-              {moment(event.eventEndDate, 'YYYYMMDDTHHmmss').format('MMM Do, YYYY')}
-            </CardTitle>
-            <CardSubtitle>{event.eventDescription}</CardSubtitle>
-            <a href = {"http://www.google.com/calendar/event?action=TEMPLATE&text="+ event.eventTitle
+            <CardText><strong>{event.eventTitle}</strong></CardText>
+            <CardText>
+              <strong>
+                {moment(event.eventStartDate, 'YYYYMMDDTHHmmss').format('MMM Do, YYYY')} -
+                {moment(event.eventEndDate, 'YYYYMMDDTHHmmss').format('MMM Do, YYYY')}
+              </strong>
+            </CardText>
+            <a className = "button button--modal" href = {"http://www.google.com/calendar/event?action=TEMPLATE&text="+ event.eventTitle
                    + "&dates=" + event.eventStartDate + "/" + event.eventEndDate + "&details=" + event.eventDescription
-                   + "&location="+ event.location + "&trp=false&sprop=&sprop=name:"} target='_blank'>Add to calender</a>
+                   + "&location="+ "Student Union" + "&trp=false&sprop=&sprop=name:"} target='_blank'>Add to calender</a>
           </CardBody>
         </Card>
       ))

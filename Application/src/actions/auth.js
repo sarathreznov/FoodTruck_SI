@@ -105,7 +105,8 @@ export const getVendorDetails = (userEmail) => {
           const openingHrs = response.data.result.openingHrs;
           const closingHrs = response.data.result.closingHrs;
           const isWorkingWeekEnd = response.data.result.isWorkingWeekEnd;
-          const menuUrl = response.data.result.menu1url;
+          const menu1Url = response.data.result.menu1url;
+          const menu2Url = response.data.result.menu2url;
           const imageUrl = response.data.result.imageUrl;
           const vendorDetails = {
             foodtruckname,
@@ -115,7 +116,8 @@ export const getVendorDetails = (userEmail) => {
             openingHrs,
             closingHrs,
             isWorkingWeekEnd,
-            menuUrl,
+            menu1Url,
+            menu2Url,
             imageUrl
           };
           return dispatch(addVendorSpecificDetails(vendorDetails));
@@ -132,7 +134,8 @@ export const addVendorSpecificDetails = ({
   openingHrs,
   closingHrs,
   isWorkingWeekEnd,
-  menuUrl,
+  menu1Url,
+  menu2Url,
   imageUrl
 }) => ({
   type: 'ADD_VENDOR_DETAILS',
@@ -143,7 +146,8 @@ export const addVendorSpecificDetails = ({
     openingHrs,
     closingHrs,
     isWorkingWeekEnd,
-    menuUrl,
+    menu1Url,
+    menu2Url,
     imageUrl
 });
 

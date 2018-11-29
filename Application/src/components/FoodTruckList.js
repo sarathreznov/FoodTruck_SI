@@ -12,14 +12,15 @@ const FoodTruckList = (props) => (
       props.visibleFoodTrucks.map((foodtruck, index) => {
         const subscribed = props.subscribedFoodTrucks[foodtruck.vendorusername];
         return (
-          <Link className = "dashboard__link" key = {index} to={`/foodtruckinfopage/${foodtruck.vendorusername}`}>
-            <Card>
-              <CardImg top width="100%" src={foodtruck.imageUrl} alt="Card image cap" />
+    
+            <Card className = "dashboard__link" key = {index}>
+            <Link to={`/foodtruckinfopage/${foodtruck.vendorusername}`}>
+             <CardImg top width="100%" src={foodtruck.imageUrl} alt="Card image cap" />
+           </Link>
               <CardBody>
-                <CardTitle>{foodtruck.vendorusername}</CardTitle>
-                <CardTitle>{foodtruck.foodtruckname}</CardTitle>
+                <CardText><strong>{foodtruck.foodtruckname}</strong></CardText>
+                <CardTitle>{foodtruck.operatingLoc}</CardTitle>
                 <CardSubtitle>{foodtruck.openingHrs} - {foodtruck.closingHrs}</CardSubtitle>
-                <CardText>{foodtruck.operatingLoc}</CardText>
                 {
                   props.userType === 'customer' ?
                   <Button onClick={
@@ -34,7 +35,7 @@ const FoodTruckList = (props) => (
                 }
               </CardBody>
             </Card>
-          </Link>
+
         );
       }
     )

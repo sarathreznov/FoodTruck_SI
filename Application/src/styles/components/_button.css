@@ -37,8 +37,8 @@
 }
 
 .button--modal {
-  background: white;
-  color: $greyish-blue;
+  background: fade-out($med-grey, .15);
+  color: black;
   margin-top: $l-size;
   margin-bottom: $xs-size;
 }
