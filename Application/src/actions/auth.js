@@ -58,15 +58,19 @@ export const addCurrentUser = ({ userType, token, userInfo, firstTimeUser})=>({
   firstTimeUser
 });
 
-export const updateVendorDetails = ({vendorusername,
-  foodtruckname,
-  location,
-  address,
-  phone,
-  openingHrs,
-  closingHrs,
-  isWorkingWeekEnd}) => {
-  return (dispatch) => {
+export const updateVendorDetails = ({
+        vendorusername,
+        foodtruckname,
+        location,
+        address,
+        phone,
+        openingHrs,
+        closingHrs,
+        isWorkingWeekEnd,
+        menu1,
+        menu2
+      }) => {
+    return (dispatch) => {
       return axios({
         method: 'patch',
         url: `${url}/vendors/`,
@@ -78,13 +82,13 @@ export const updateVendorDetails = ({vendorusername,
           phone: phone,
           openingHrs: openingHrs,
           closingHrs: closingHrs,
-          isWorkingWeekEnd: isWorkingWeekEnd
+          isWorkingWeekEnd: isWorkingWeekEnd,
+          menu1url: menu1,
+          menu2url: menu2
         }
-      }).then(function(response) {
-        console.log(response);
-        dispatch(getVendorDetails(vendorusername));
-    });
-};
+      }).then((response) => dispatch(getVendorDetails(vendorusername))
+    );
+  };
 };
 
 export const getVendorDetails = (userEmail) => {
@@ -92,7 +96,7 @@ export const getVendorDetails = (userEmail) => {
       return axios({
         method: 'get',
         url: `${url}/vendors/${userEmail}`
-      }).then(function(response) {
+      }).then((response) => {
         if(response){
           const foodtruckname = response.data.result.foodtruckname;
           const location = response.data.result.operatingLoc;
@@ -114,7 +118,7 @@ export const getVendorDetails = (userEmail) => {
             menuUrl,
             imageUrl
           };
-          dispatch(addVendorSpecificDetails(vendorDetails));
+          return dispatch(addVendorSpecificDetails(vendorDetails));
         }
     });
 };

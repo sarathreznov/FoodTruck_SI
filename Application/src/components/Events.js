@@ -17,10 +17,13 @@ const Events = (props) => (
             <CardTitle>{event.vendorusername}</CardTitle>
             <CardTitle>{event.eventTitle}</CardTitle>
             <CardTitle>
-              {moment(event.eventStartDate, 'MM-DD-YYYY').format('MMMM Do, YYYY')} -
-              {moment(event.eventEndDate, 'MM-DD-YYYY').format('MMMM Do, YYYY')}
+              {moment(event.eventStartDate, 'YYYYMMDDTHHmmss').format('MMM Do, YYYY')} -
+              {moment(event.eventEndDate, 'YYYYMMDDTHHmmss').format('MMM Do, YYYY')}
             </CardTitle>
             <CardSubtitle>{event.eventDescription}</CardSubtitle>
+            <a href = {"http://www.google.com/calendar/event?action=TEMPLATE&text="+ event.eventTitle
+                   + "&dates=" + event.eventStartDate + "/" + event.eventEndDate + "&details=" + event.eventDescription
+                   + "&location="+ event.location + "&trp=false&sprop=&sprop=name:"} target='_blank'>Add to calender</a>
           </CardBody>
         </Card>
       ))

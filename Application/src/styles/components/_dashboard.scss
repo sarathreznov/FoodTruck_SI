@@ -7,6 +7,19 @@
 }
 
 .dashboard__cards{
+  // width: 30%;
+  // margin: 1.66%;
+}
+
+
+.dashboard__link{
+  border-top: none;
+  color: $dark-grey;
+  text-decoration: none;
+  &:hover{
+    background: inherit;
+    color:inherit;
+  }
   width: 30%;
   margin: 1.66%;
 }

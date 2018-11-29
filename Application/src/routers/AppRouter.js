@@ -7,6 +7,7 @@ import LoginPage from '../components/LoginPage';
 import CustomerProfilePage from '../components/CustomerProfilePage';
 import VendorProfilePage from '../components/VendorProfilePage';
 import NotFoundPage from '../components/NotFoundPage';
+import FoodTruckInfoPage from '../components/FoodTruckInfoPage';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -17,6 +18,7 @@ const AppRouter = () => (
     <div>
       <Switch>
         <Route path="/" component={DashboardPage} exact={true} />
+        <Route path="/foodtruckinfopage/:id" component={FoodTruckInfoPage} />
         <PublicRoute path="/login" component={LoginPage} />
         <PrivateRoute path="/customerprofile" allowedUserType={'customer'} component={CustomerProfilePage} />
         <PrivateRoute path="/vendorprofile" allowedUserType={'vendor'} component={VendorProfilePage} />

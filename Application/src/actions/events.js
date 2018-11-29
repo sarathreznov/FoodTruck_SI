@@ -79,9 +79,8 @@ const saveAllSubscribedEvents = (subscribedEvents) => ({
   export const uploadMenuImagesToS3 = (menu1, menu2, vendorusername) => {
     return (dispatch, getState) => {
     let promises = [];
-    let numberOfMenuPages = 2;
-    for(let i=0 ; i<numberOfMenuPages; i++){
-      console.log(i);
+    let menus = [menu1, menu2];
+    for(let menu of menus){
       promises.push(axios({
       method: 'get',
       url: `${url}/vendors/uploadeventimage`,
@@ -91,38 +90,29 @@ const saveAllSubscribedEvents = (subscribedEvents) => ({
     }));
     }
     return axios.all(promises).then((results) => {
-      results.forEach((response) => console.log(response));
-        // let subscribedEvents = [];
-        // results.forEach((response) => {
-        //   subscribedEvents.push(response.data.result);
-        // });
-        // return dispatch(saveAllSubscribedEvents(subscribedEvents));
+      let urls = [];
+      let promises = [];
+      results.forEach((response, index) => {
+        let uploadUrl = response.data.url;
+        let imageUrl = response.data.key;
+        let url = `https://s3.amazonaws.com/foodtruck-vendor-info/${imageUrl}`;
+        urls.push(url);
+        promises.push(axios({
+        method: 'put',
+        url: `${uploadUrl}`,
+        data: menus[index],
+        headers: {
+         'Content-Type': menus[index].type
+        }
+      }));
+      });
+      return axios.all(promises).then(() => urls)
+      .catch((e) => {
+        console.log('Something went wrong', e);
+      });
     });
-
-
-   //  return axios({
-   //    method: 'get',
-   //    url: `${url}/vendors/uploadeventimage`,
-   //    params: {
-   //      vendorusername
-   //    }
-   //  }).then((response) => {
-   //        const uploadUrl = response.data.url;
-   //        const imageUrl = response.data.key;
-   //        return axios({
-   //        method: 'put',
-   //        url: `${uploadUrl}`,
-   //        data: eventImageFile,
-   //        headers: {
-   //         'Content-Type': eventImageFile.type
-   //        }
-   //    }).then(() => `https://s3.amazonaws.com/foodtruck-vendor-info/${imageUrl}`)
-   // }).catch((e) => {
-   //   console.log('Something went wrong', e);
-   // });
-
   };
-  };
+};
 
 export const uploadImageToS3 = (eventImageFile, vendorusername) => {
   return (dispatch, getState) => {

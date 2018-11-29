@@ -44,13 +44,11 @@ export class VendorProfilePage extends React.Component {
     this.setState(()=>({ phone }));
   };
 
-  onOpeningHrsChange = (e) => {
-    const openingHrs = e.target.value;
+  onOpeningHrsChange = (openingHrs) => {
     this.setState(()=>({ openingHrs }));
   };
 
-  onClosingHrsChange = (e) => {
-    const closingHrs = e.target.value;
+  onClosingHrsChange = (closingHrs) => {
     this.setState(()=>({ closingHrs }));
   };
 
@@ -76,39 +74,23 @@ export class VendorProfilePage extends React.Component {
     const isWorkingWeekEnd = this.state.isWorkingWeekEnd;
     const menu1 = this.state.menu1;
     const menu2 = this.state.menu2;
-    this.props.uploadMenuImagesToS3(menu1, menu2, vendorusername);
-    this.props.updateVendorDetails({
-      vendorusername,
-      foodtruckname,
-      location,
-      address,
-      phone,
-      openingHrs,
-      closingHrs,
-      isWorkingWeekEnd
+    this.props.uploadMenuImagesToS3(menu1, menu2, vendorusername).then((menus) => {
+      this.props.updateVendorDetails({
+        vendorusername,
+        foodtruckname,
+        location,
+        address,
+        phone,
+        openingHrs,
+        closingHrs,
+        isWorkingWeekEnd,
+        menu1: menus[0],
+        menu2: menus[1]
+      })
     })
     .then((message) => console.log("Updated"))
     .catch((e) => {console.log('Something went wrong', e)});
   };
-
-
-//
-//   this.props.uploadImageToS3(eventImageFile, this.props.email).then((imageUrl) => {
-//     return this.props.createNewEvent({
-//     vendorusername: this.props.email,
-//     eventTitle,
-//     eventDescription,
-//     eventStartDate,
-//     eventEndDate,
-//     imageUrl
-//   });
-// })
-//   .then((message) => console.log(message))
-//   .catch((e) => {console.log('Something went wrong', e)});
-
-  // getProfileImage = () => {
-  //   this.setState(() => ({photoURL: this.props.imageUrl}));
-  // };
 
   openModalView = () => {
     this.setState(() => ({openModal: true}));
@@ -190,15 +172,16 @@ export class VendorProfilePage extends React.Component {
         <div className="profile-group-column">
           <div className="profile-group-row">
             <img className="profileImage" src={imageUrl} />
-            <div className="profile-group-column">
-              <h2 className="profile-group-column__item">{name}</h2>
-              <h4 className="profile-group-column__item">Email: {email}</h4>
+            <div className="profile-group-column--user">
+              <h1 className="profile-group-column__item"><strong>{name}</strong></h1>
+              <h2 className="profile-group-column__item"><strong>Email:</strong> {email}</h2>
               <div className="profile-group-row">
-                <h4 className="profile-group-row__item">Food Truck details</h4>
-                <button className="button button--without-border" onClick={this.openModalView}>Update details</button>
+
+                {/* <button className="button button--without-border" onClick={this.openModalView}>Update details</button> */}
               </div>
               <p className="profile-group-smaller-column__item"><strong>Food Truck Name:</strong> {foodtruckname}</p>
               <p className="profile-group-smaller-column__item"><strong>Location: </strong> {location}</p>
+              <p className="profile-group-smaller-column__item"><strong>Address: </strong> {address}</p>
               <p className="profile-group-smaller-column__item"><strong>Phone: </strong> {phone}</p>
               <p className="profile-group-smaller-column__item"><strong>Time: </strong> {openingHrs} - {closingHrs}</p>
               <p className="profile-group-smaller-column__item"><strong>Open on weekends: </strong> {isWorkingWeekEnd ? 'Yes' : 'No' }</p>
@@ -206,7 +189,12 @@ export class VendorProfilePage extends React.Component {
           </div>
           <div className="box-layout__box--alternate">
             <button
-              className="button"
+              className="button button--vendor"
+              onClick={this.openModalView}>
+              Update details!
+            </button>
+            <button
+              className="button button--vendor"
               onClick={this.openEventModalView}>
               Create Events!
             </button>
@@ -243,6 +231,8 @@ export class VendorProfilePage extends React.Component {
           onVendorDetailsSubmit = {this.onVendorDetailsSubmit}
           onMenu1ImageChanged = {this.onMenu1ImageChanged}
           onMenu2ImageChanged = {this.onMenu2ImageChanged}
+          time = {this.state.time}
+          onTimeChange = {this.onTimeChange}
         />
         </div>
     )
