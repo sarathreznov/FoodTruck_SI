@@ -1,2 +1,2 @@
 # Food Truck App!
-[Wiki Page Link](/wiki)
+[Wiki Page Link](../../wiki)
